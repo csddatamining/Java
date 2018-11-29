@@ -9,9 +9,9 @@ public class ConcurrentTestDemo {
         int currency = 50;
 
         //循环屏障
-        CyclicBarrier cb = new CyclicBarrier(currency);
+        final CyclicBarrier cb = new CyclicBarrier(currency);
 
-        OrderService orderService  = new OrderServiceImpl();
+        final OrderService orderService  = new OrderServiceImpl();
 
         for (int i = 0; i < currency; i++) {
             new Thread(new Runnable() {

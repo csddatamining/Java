@@ -9,7 +9,7 @@ public class ConcurrentTestDistributeDemo {
         int currency = 20;
 
         // 循环屏障
-        CyclicBarrier cb = new CyclicBarrier(currency);
+        final CyclicBarrier cb = new CyclicBarrier(currency);
         for (int i = 0; i < currency; i++) {
             new Thread(new Runnable() {
                 @Override
