@@ -5,9 +5,9 @@ package main.java;
  * @discription: 多线程相关Demo
  * @create 2018-12-30 17:18
  */
-public class ThreadDemo {
+public class ThreadStateDemo {
     public static Thread thread1;
-    public static ThreadDemo obj;
+    public static ThreadStateDemo obj;
 
     public static void main(String[] args) throws Exception {
         // 第一种状态切换 - 新建 -> 运行 -> 终止
@@ -52,13 +52,13 @@ public class ThreadDemo {
         Thread thread3 = new Thread(new Runnable() {
             @Override
             public void run() {
-                synchronized (ThreadDemo.class) {
+                synchronized (ThreadStateDemo.class) {
                     System.out.println("thread3当前状态：" + Thread.currentThread().getState().toString());
                     System.out.println("thread3 执行了");
                 }
             }
         });
-        synchronized (ThreadDemo.class) {
+        synchronized (ThreadStateDemo.class) {
             System.out.println("没调用start方法，thread3当前状态：" + thread3.getState().toString());
             thread3.start();
             System.out.println("调用start方法，thread3当前状态：" + thread3.getState().toString());
