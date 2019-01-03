@@ -1,0 +1,52 @@
+通信方式：
+1）文件共享
+2）网络共享
+3）共享变量
+4）jdk提供的线程协调API
+
+线程协作-JDK API
+多线程协作典型场景：生产者-消费者模型（线程阻塞、线程唤醒）
+
+示例：线程1买包子，没有包子，则不再执行。线程2生产包子，通知线程1继续执行
+
+API-被弃用的suspend和resume
+作用：suspend挂起目标线程，通过resume可以恢复线程执行。
+死锁示例：
+1.同步代码中使用
+2.suspend比resume后执行
+
+wait/notify机制
+只能由同一对象锁的持有者线程调用，也就是写在同步代码块里，否则会抛出illegalMonitorStateException
+
+wait方法导致当前线程等待，加入该对象的等待集合中，并且放弃当前持有的锁
+notify/notifyAll方法唤醒一个或所有正在等待这个锁的线程。
+
+注意：虽然wait会自动解锁，但是对顺序有要求，如果被notify调用之后，才开始wait方法，线程会永远处于waiting状态
+
+park/unpark机制
+线程调用park等待“死锁”，unpark方法为指定线程提供“许可（permit）”
+不要求park和unpark的方法调用顺序
+多次调用unpark之后，再调用park，线程会直接运行
+但不会叠加，也就是说
+
+伪唤醒
+警告！使用if语句来判断是否进入等待状态，是错误的
+官方建议不要用if来做条件检查，原因是处于等待状态的线程可能收到错误警报和伪唤醒，如果不在循环中检查等待条件，程序就会在没有满足条件的情况下退出
+
+伪唤醒是指线程并非因为notify、notifyAll、unpark等api调用唤醒，而是更底层的原因导致
+// wait
+synchronized(obj){
+    while(<条件判断>){
+        obj.wait();
+        //执行后续操作
+    }
+}
+
+//park
+while(<条件判断>){
+    LockSupport.park();
+    //执行后续操作
+}
+
+
+
