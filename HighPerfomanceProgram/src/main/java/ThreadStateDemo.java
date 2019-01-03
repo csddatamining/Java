@@ -3,6 +3,15 @@ package main.java;
 /**
  * @author Cdu
  * @discription: 多线程相关Demo
+ * 线程状态
+ * java.lang.Thread.State
+ * 1.New：新建线程尚未启动的线程状态
+ * 2.Runnable可运行线程的线程状态，等待CPU调度
+ * 3.Blocked：线程阻塞等待监视器锁定的线程状态
+ * 处于synchronized同步代码块或方法中被阻塞
+ * 4.Waiting：等待线程的线程状态
+ * 5.Timed Waiting：具有指定等待时间的等待线程的线程状态
+ * 6.Terminated：终止线程的线程状态。线程正常完成执行或者出现异常
  * @create 2018-12-30 17:18
  */
 public class ThreadStateDemo {
