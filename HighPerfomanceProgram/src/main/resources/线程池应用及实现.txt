@@ -1,0 +1,29 @@
+为什么用线程池
+    线程池是不是越多越好
+    1.线程在Java中是一个对象，更是操作系统的资源，线程创建、销毁需要时间。如果创建时间+销毁时间 > 执行任务的时间 就很不合算
+    2.Java对象会占用内存，操作系统线程占用系统内存，根据jvm规范，一个线程默认最大栈大小为1M，这个栈空间需要从系统内存中分配。线程过多，会消耗很多的内存
+    3.操作系统需要频繁切换线程上下文，影响性能。
+    线程池的推出，就是为了方便控制线程的数量，生产环境中一般都会用到线程池
+
+线程池原理-概念
+1、线程池管理器：用于创建并管理线程池，包括创建线程池，销毁线程池，添加新任务
+2、工作线程：线程池中线程，在没有任务时处于等待状态，可以循环的执行任务
+3、任务接口：每个任务必须实现的接口，以供工作线程调度任务的执行，它主要规定了任务的入口，任务执行完后的收尾工作，任务的执行状态等。
+4、任务队列：用于存放没有处理的任务。提供一种缓冲机制。
+
+线程池API-接口定义和实现类
+接口：
+Executor：最上层接口，定义执行任务的方法execute
+ExecutorService：继承Executor接口，拓展了Callable、Future、关闭方法
+ScheduleExecutorService：继承了ExecutorService，增加定时任务相关方法
+实现类：
+ThreadPoolExecutor：基础、标准的线程池实现
+ScheduledThreadPoolExecutor：继承了ThreadPoolExecutor，实现了ScheduleExecutorService中相关定时任务的方法
+
+//创建并执行一个周期性的任务
+ScheduledAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit);
+
+////创建并执行一个周期性的任务
+ScheduledWithFixedDelay(Runnable command, long initialDelay, long period, TimeUnit unit);
+区别：超过周期的长时间处理任务，下次执行任务的基础上，增加计算延时
+
