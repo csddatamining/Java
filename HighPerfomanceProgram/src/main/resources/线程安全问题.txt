@@ -20,4 +20,54 @@ JVM内存模型
 
 一个线程修改的值是否能被另一个线程可见，可见性问题
 
+Shared Variables共享变量描述
+可以在线程间共享的内存称为共享内存或堆内存
+所有实例字段、静态字段和数组元素都存储在堆内存中
+如果至少有一个访问是写的，那么对同一变量的两次访问（读或写）是冲突的
 
+线程操作的定义
+write/read
+lock/unlock
+外部操作
+启动和终止
+
+同步规则的定义：
+1.对于监视器m的解锁与所有后续操作对于m的加锁同步
+2.对volatile变量v的写入，于所有其他线程后续对v的读取同步
+3.启动线程的操作与线程中的第一个操作同步
+4.对于每个属性写入默认值（0，false，null）与每个线程对其进行的操作同步
+5.线程T1的最后操作与线程T2发现线程T1已经结束 同步（isAlive，join）
+6.如果线程T1中断了T2，那么线程T1的中断操作与其他所有线程发现T2被中断了同步
+通过抛出InterruptException异常，或者调用Thread.interrupted或者Thread.isInterrupted
+
+Happens-before先行发生原则
+ happens-before关系强调两个有冲突的动作之间的顺序，以及定义数据争用的发生时机
+
+
+
+volatile关键字
+可见性问题：让一个线程对共享变量的修改，能够及时的被其他线程看到
+
+内存模型决定了在程序的每个点可以读取什么
+
+
+jitwatch的使用
+可直接参考这个操作博客
+http://www.cnblogs.com/stevenczp/p/7975776.html
+https://www.cnblogs.com/stevenczp/p/7978554.html
+1、 输出jit日志
+（windows）在jre/bin/server  放置hsdis动态链接库
+eclise、idea等工具，加上JVM参数
+-server -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:+LogCompilation -XX:LogFile=jit.log
+2、 工具安装
+下载  https://github.com/AdoptOpenJDK/jitwatch
+解压 通过maven运行
+mvn clean compile exec:java
+3、 配置jitwatch
+页面选择 config， 配置要调试的项目src源码路径，和class编译路径
+打开jit.log
+点击start
+4、 在分析的结果中，选中指定的类，再选择右侧的具体方法，则弹出jit编译结果
+
+
+final在JVM中的处理

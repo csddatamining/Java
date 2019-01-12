@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ThreadSafeDemo {
 
-    private boolean flag = true;
+    private volatile  boolean flag = true;
 
     public static void main(String[] args) throws InterruptedException{
         final ThreadSafeDemo threadSafeDemo = new ThreadSafeDemo();
