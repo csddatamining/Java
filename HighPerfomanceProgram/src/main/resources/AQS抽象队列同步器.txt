@@ -1,0 +1,9 @@
+AQS抽象队列同步器
+提供了对资源占用、释放，线程的等待、唤醒等接口和具体实现
+可以用在各种需要控制资源争用的场景中。（ReentrantLock/CountDownLatch/Semphore）
+acquire、acquireShared：定义资源争用的逻辑，如果没有拿到，继续等待
+tryAcquire、tryAcquireShared：实际执行占用资源的操作，如何判定一个由使用者具体去实现
+release、releaseShared：定义释放资源的逻辑，释放之后，通知后续节点进行争抢
+tryRelease、tryReleaseShared：实际执行资源释放的操作，具体的AQS使用者去实现
+
+单向链表、循环链表数据结构
