@@ -6,13 +6,14 @@ package main.java;
  * @create 2019-01-01 23:39
  */
 public class ThreadInterruptDemo {
+
     public static void main(String[] args) throws InterruptedException {
         StopThread thread = new StopThread();
         thread.start();
         // 休眠1秒，确保i变量自增成功
-        Thread.sleep(1000);
+        Thread.sleep(1000L);
         // 暂停线程
-        //  thread.stop(); // 错误的终止
+        //thread.stop(); // 错误的终止
         thread.interrupt(); // 正确终止
         while (thread.isAlive()) {
             // 确保线程已经终止
@@ -21,6 +22,7 @@ public class ThreadInterruptDemo {
     }
 
     static class StopThread extends Thread {
+
         private int i = 0, j = 0;
 
         @Override
@@ -30,7 +32,7 @@ public class ThreadInterruptDemo {
                 ++i;
                 try {
                     // 休眠10秒,模拟耗时操作
-                    Thread.sleep(10000);
+                    Thread.sleep(10000L);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

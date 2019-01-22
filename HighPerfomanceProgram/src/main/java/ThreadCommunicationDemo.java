@@ -8,6 +8,7 @@ import java.util.concurrent.locks.LockSupport;
  * @create 2019-01-03 22:38
  */
 public class ThreadCommunicationDemo {
+
     /**
      * 包子店
      */
@@ -15,13 +16,11 @@ public class ThreadCommunicationDemo {
 
     /**
      * 正常的suspend和resume
-     *
-     * @throws Exception
      */
     public void suspendResumeTest() throws Exception {
         // 启动线程
         Thread consumerThread = new Thread(() -> {
-            if (baozidian == null) {
+            while (baozidian == null) {
                 System.out.println("1.进入等待");
                 Thread.currentThread().suspend();
             }
@@ -41,7 +40,7 @@ public class ThreadCommunicationDemo {
     public void suspendResumeDeadLockTest() throws Exception {
         // 启动线程
         Thread consumerThread = new Thread(() -> {
-            if (baozidian == null) { // 如果没包子，则进入等待
+            while (baozidian == null) { // 如果没包子，则进入等待
                 System.out.println("1、进入等待");
                 // 当前线程拿到锁，然后挂起
                 synchronized (this) {
@@ -67,7 +66,7 @@ public class ThreadCommunicationDemo {
     public void suspendResumeDeadLockTest2() throws Exception {
         // 启动线程
         Thread consumerThread = new Thread(() -> {
-            if (baozidian == null) {
+            while (baozidian == null) {
                 System.out.println("1、没包子，进入等待");
                 try { // 为这个线程加上一点延时
                     Thread.sleep(5000L);
@@ -121,7 +120,7 @@ public class ThreadCommunicationDemo {
     public void waitNotifyDeadLockTest() throws Exception {
         // 启动线程
         new Thread(() -> {
-            if (baozidian == null) { // 如果没包子，则进入等待
+            while (baozidian == null) { // 如果没包子，则进入等待
                 try {
                     Thread.sleep(5000L);
                 } catch (InterruptedException e1) {
@@ -173,7 +172,7 @@ public class ThreadCommunicationDemo {
     public void parkUnparkDeadLockTest() throws Exception {
         // 启动线程
         Thread consumerThread = new Thread(() -> {
-            if (baozidian == null) { // 如果没包子，则进入等待
+            while (baozidian == null) { // 如果没包子，则进入等待
                 System.out.println("1、进入等待");
                 // 当前线程拿到锁，然后挂起
                 synchronized (this) {
