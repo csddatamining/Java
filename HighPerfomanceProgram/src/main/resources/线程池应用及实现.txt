@@ -41,6 +41,11 @@ newSingleThreadExecutor()只有一个线程来执行无界任务队列的单一�
 
 newScheduledThreadPool(int corePoolSize)能定时执行任务的线程池。该池的核心线程数由参数指定，最大线程数=Integer.MAX_VALUE。
 
+注意：线程池创建不允许使用Executors创建，而是通过ThreadPoolExecutor的方式，这样的处理方式让那个写的同学更加明确线程池的运行规则，规避资源耗尽风险。
+Executors各个方法的弊端：
+1）newFixedThreadPool和newSingleThreadExecutor：堆积的请求队列可能会耗费非常大的内存，甚至OOM。
+2）newCachedThreadPool和newScheduledThreadPool：主要问题是线程数最大是Integer。MAX_VALUE，可能会创建数量非常多的线程，甚至OOM。
+
 五、线程池原理-任务execute过程
 1.是否达到核心线程数量？没达到，创建一个工作线程来执行任务
 2.工作队列是否已满？没满，将新提交的任务存储在工作队列里。
