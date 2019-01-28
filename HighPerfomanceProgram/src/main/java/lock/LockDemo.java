@@ -6,19 +6,20 @@ package main.java.lock;
  * @create 2019-01-12 12:00
  */
 public class LockDemo {
+
     volatile int i = 0;
 
-    public void add(){
+    public void add() {
 //        //增加synchronized关键字进行同步
 //        synchronized (this) {
-            i++;
+        i++;
 //        }
     }
 
-    public static void main(String[] args) throws InterruptedException{
+    public static void main(String[] args) throws InterruptedException {
         LockDemo lockDemo = new LockDemo();
         for (int i = 0; i < 2; i++) {
-            new Thread(()->{
+            new Thread(() -> {
                 for (int j = 0; j < 10000; j++) {
                     lockDemo.add();
                 }
