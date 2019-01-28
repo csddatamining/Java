@@ -28,7 +28,7 @@ Shared Variables共享变量描述
 线程操作的定义
 write/read
 lock/unlock
-外部操作
+外部操作（socket等）
 启动和终止
 
 同步规则的定义：
@@ -41,15 +41,34 @@ lock/unlock
 通过抛出InterruptException异常，或者调用Thread.interrupted或者Thread.isInterrupted
 
 Happens-before先行发生原则
- happens-before关系强调两个有冲突的动作之间的顺序，以及定义数据争用的发生时机
-
+happens-before关系强调两个有冲突的动作之间的顺序，以及定义数据争用的发生时机
+具体的虚拟机，有必要确保一下原则的成立
+某个线程中的每个动作都happens-before该线程中该动作后面的动作。
+某个管程上的unlock动作happens-before同一个管程上后续的lock动作
+对某个volatile字段的写操作happens-before每个后续对该volatile字段的读操作
+在某个线程对象上调用start()方法happens-before该启动了的线程中的任意动作
+某个线程中的所有动作happens-before任意其他线程成功从该线程对象上的jon()中返回
+如果某个动作a happens-before 动作b，且b happens-before 动作c，则有a happens-before c
 
 
 volatile关键字
 可见性问题：让一个线程对共享变量的修改，能够及时的被其他线程看到
+根据JVM中规定的happen before和同步原则
+对某个volatile字段的写操作happens-before每个后续对该volatile字段的读操作
+对volatile变量v的写入，与所有其他线程后续对v的读同步
+
+要满足这些条件，所以volatile关键字就有这些功能：
+1.禁止缓存：
+volatile变量的访问控制符会加ACC_VOLATILE
+https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.5
+2.对volatile变量相关的指令不做重排序
+
+可通过javap -v -p ***.class查看变量是否有ACC_VOLATILE (jvm定义了这个flag是不可以cache的)
+
+思路：从内存结构到内存模型
+jvm工作方式，有多块内存区域，处理放在主内存中，读数据会有缓存，会存在数据不一致、指令重排序等情况
 
 内存模型决定了在程序的每个点可以读取什么
-
 
 jitwatch的使用
 可直接参考这个操作博客
@@ -69,5 +88,7 @@ mvn clean compile exec:java
 点击start
 4、 在分析的结果中，选中指定的类，再选择右侧的具体方法，则弹出jit编译结果
 
-
 final在JVM中的处理
+final在该对象的构造函数中设置对象的字段，当线程看到该对象时，将始终看到该对象的final字段的正确构造版本
+
+如果在构造函数中设置字段后发生读取，则会看到该final字段分配的值，否则它将看到默认值
