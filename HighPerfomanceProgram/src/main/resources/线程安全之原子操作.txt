@@ -45,5 +45,8 @@ AtomicIntegerFieldUpdater:原子更新整形的字段的更新器
 AtomicLongFiledUpdater
 AtomicReferenceFieldUpdater
 
-
+CAS的三个问题
+1.循环+CAS，自旋的实现让所有线程都处于高频运行，争抢CPU执行时间的状态。如果操作长时间不成功，会带来很大的CPU资源消耗
+2.仅针对单个变量的操作，不能用于多个变量来实现原子操作
+3.ABA问题
 
