@@ -1,23 +1,23 @@
 package main.java.lock;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
- * @author Cdu
- * @discription: 多线程对变量进行递增操作
- * @create 2019-01-12 12:00
+ * 使用Atomic进行原子操作
+ *
+ * @author chenshuaiduo
+ * @date 2019-01-29 11:31
  */
-public class LockDemo {
+public class LockDemo2 {
 
-    volatile int i = 0;
+    AtomicInteger i = new AtomicInteger(0);
 
-    public void add() {
-//        //增加synchronized关键字进行同步
-//        synchronized (this) {
-        i++;
-//        }
+    public void add(){
+        i.incrementAndGet();
     }
 
     public static void main(String[] args) throws InterruptedException {
-        LockDemo lockDemo = new LockDemo();
+        LockDemo2 lockDemo = new LockDemo2();
         for (int i = 0; i < 2; i++) {
             new Thread(() -> {
                 for (int j = 0; j < 10000; j++) {

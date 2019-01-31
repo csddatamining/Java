@@ -10,9 +10,15 @@ import java.lang.reflect.Field;
  * @create 2019-01-12 14:21
  */
 public class LockDemo1 {
-    volatile int i = 0;
 
-    static Unsafe unsafe;//直接操作内存，修改对象，数组内存
+    volatile int value = 0;
+
+    /**
+     * 直接操作内存，修改对象，数组内存
+     */
+    static Unsafe unsafe;
+
+    private static long valueOffset;
 
     static {
         try {
@@ -20,27 +26,34 @@ public class LockDemo1 {
             Field field = Unsafe.class.getDeclaredField("theUnsafe");
             field.setAccessible(true);
             unsafe = (Unsafe) field.get(null);
-
+            //获取到value属性偏移量，用于定位value属性在内存中的具体地址
+            valueOffset = unsafe.objectFieldOffset(LockDemo1.class.getDeclaredField("value"));
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
     public void add() {
-        i++;
+        // CAS+循环重试
+        int current;
+        do {
+            //操作耗时的话， 线程会占用大量的CPU执行时间
+            current = unsafe.getIntVolatile(this, valueOffset);
+        } while (!unsafe.compareAndSwapInt(this, valueOffset, current, current + 1));
+
     }
 
     public static void main(String[] args) throws InterruptedException {
-        LockDemo lockDemo = new LockDemo();
+        LockDemo1 lockDemo1 = new LockDemo1();
         for (int i = 0; i < 2; i++) {
             new Thread(() -> {
                 for (int j = 0; j < 10000; j++) {
-                    lockDemo.add();
+                    lockDemo1.add();
                 }
             }).start();
         }
 
         Thread.sleep(2000L);
-        System.out.println(lockDemo.i);
+        System.out.println(lockDemo1.value);
     }
 }
