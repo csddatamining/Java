@@ -36,5 +36,47 @@
 5.不可达（unreachable）：意味着可以被清除了
 
 垃圾收集算法
-标记-清除（Mark-Sweep）算法：
-复制算法：
+标记-清除（Mark-Sweep）算法：内存碎片
+复制算法：空间浪费
+标记整理算法：
+
+分代收集
+根据对象的存活周期，将内存划分为几个区域，不同区域采用合适的垃圾收集算法
+新对象会分配到Eden，如果超过-XX:+PretenureSuzeThreshould:设置打对象直接进入老年代的阈值
+
+堆内存分为新生代和老年代，比例为1:2 300M:600M
+新生代：复制算法。Eden、S0、S1
+老生代：标记整理算法
+
+垃圾收集器
+串行收集器 -Serial GC -XX:+UseSerialGC
+单个线程来执行所有垃圾收集工作，适合单处理器机器
+Client模式下JVM的默认选项
+串行收集器 -Serial Old -XX:+UseSerialOldGC
+可以在老年代使用，它采用了标记-整理算法（Mark-Compact），区别于新生代的复制算法
+
+并行收集器 - Parallel GC -XX:+UserParallelGC
+并行收集器 - Parallel Old GC -XX:+UserParallelOldGC
+
+server模式JVM的默认GC选择，整体算法和Serial比较相似，区别是新生代和老年代GC都是并行进行
+可以设置GC事件或吞吐量等值，可以自动进行适应性调整Eden，Survivor大小和MaxTutoringThreshold的值
+也称为吞吐量优先的GC：吞吐量=用户代码运行时间/(用户代码运行时间+GC时间)
+
+并发收集器 - CMS (Concurrent Mark Sweep) GC -XX:+UseConcMarkSweepGC
+专用老年代，基于标记-清除算法，设计目标是尽量减少停顿时间
+采用的标记-清除算法，存在聂村碎片化问题，长时间运行等情况下发送full GC，导致恶劣的停顿
+CMS会占用更多CPU资源，并和用户线程争抢
+减少了停顿时间
+
+并行收集器 - ParNew GC -XX:+UseParNewGC
+新生代GC实现，它实际是Serial GC的多线程版本
+可以控制线程数量，参数： -XX:ParallelGCThreads
+最常见的应用场景是配合老年代的CMS GC工作。参数-XX:+UseConcMarkSweepGC
+
+并发收集器 - G1 -XX:+UseG1GC
+针对大堆内存设计的收集器，兼顾吞吐量和停顿时间，JDK9后为默认选项，目标替代CMS
+G1将堆分成固定大小的区域，Region之间是复制算法，但整体上实际可以看做是标记-整理算法
+可以有效地避免内存碎片。红色新生代（Eden和Survivor），淡蓝色老年代，找不到大内存时执行Full GC
+
+年轻代：Serial、ParNew、Parallel Scavenge、G1
+老年代：CMS、Serial Old、Parallel Old、G1
