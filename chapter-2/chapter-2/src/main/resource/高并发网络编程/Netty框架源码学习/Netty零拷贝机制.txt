@@ -1,0 +1,18 @@
+Netty自己的ByteBuf
+ByteBuf是为解决ByteBuffer的问题和满足网络应用程序开发人员的日常需求设计的
+
+JDK ByteBuffer的缺点：
+无法动态扩容
+长度是固定，不能动态扩展和收缩，当数据大于ByteBuffer容量时，会发生索引越界异常
+API使用复杂
+读写的时候需要手工调用flip()和rewind()等方法，使用时需要非常谨慎的使用这些API，否则很容易出现错误
+
+ByteBuf做了哪些增强：
+API操作便捷性
+动态扩容
+多种ByteBuf实现
+高效的零拷贝机制
+
+ByteBuf操作
+三个重要属性：capacity容量、readerIndex读取位置、writeIndex写入位置
+提供了两个指针变量来支持顺序读和写操作，分别是readIndex和写操作writeIndex
