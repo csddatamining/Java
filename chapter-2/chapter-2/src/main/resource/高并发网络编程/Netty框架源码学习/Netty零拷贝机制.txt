@@ -16,3 +16,28 @@ API操作便捷性
 ByteBuf操作
 三个重要属性：capacity容量、readerIndex读取位置、writeIndex写入位置
 提供了两个指针变量来支持顺序读和写操作，分别是readIndex和写操作writeIndex
+
+ByteBuf动态扩容
+capacity默认值：256字节、最大值：Integer.MAX_VALUE(2GB)
+
+write*方法调用时，通过AbstractByteBuf.ensureWritable()进行检查
+容量计算方法：AbstractByteBufAllocator.calculateNewCapacity()
+根据capacity的最小值要求，对应有两套计算方法：
+没超过4MB：从64字节开始，每次增加一倍，直至计算出来的newCapacity满足新容量的要求
+示例：当前大小256，已写250，继续写10字节数据，需要的容量最小要求是261，则新容量是64*2*2*2=512
+超过4MB：新容量 = 新容量最小要求/4兆*4兆+4兆
+示例：当前大小3兆，已写3兆，继续写2兆，需要的容量最小是5兆，则新容量时9兆（不能超过最大值）
+4兆的来源：一个固定阈值AbstractByteBufAllocator.CALCULATE_THRESHOLD
+
+选择合适的ByteBuf实现
+了解核心的：3个维度的划分方式，8种具体实现方式
+堆内/堆外       是否池化        访问方式        具体实现类
+heap堆内        unpool          safe/unsafe   UnpooledHeapByteBuf/UnpooledUnsafeHeapByteBuf
+heap堆内        pool            safe/unsafe   PooledHeapByteBuf/PooledUnsafeHeapByteBuf
+direct堆外        unpool        safe/undafe   UnpooledDirectByteBuf/UnpooledUnsafeDirectByteBuf
+direct堆外        pool          safe/unsafe   PooledDirectByteBuf/PooledUnsafeDirectByteBuf
+在使用中，都是通过ByteBufAllocator分配器进行申请，同时分配器具备有内存管理的功能
+
+Unsafe的实现
+unsafe意味着不安全的操作。但是更底层的操作会带来性能提升和特殊功能，Netty中会尽力使用unsafe
+
