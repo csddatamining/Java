@@ -41,3 +41,10 @@ direct堆外        pool          safe/unsafe   PooledDirectByteBuf/PooledUnsafe
 Unsafe的实现
 unsafe意味着不安全的操作。但是更底层的操作会带来性能提升和特殊功能，Netty中会尽力使用unsafe
 
+PooledByteBuf对象、内存复用
+
+零拷贝机制
+Netty的零拷贝机制，是一种应用层的实现。和底层JVM、操作系统内存机制并无过多关联
+1.CompositeByteBuf，将多个ByteBuf合并为一个逻辑上的ByteBuf，避免了各个ByteBuf之间的拷贝
+2.wrapedBuffer方法，将byte[]数组包装成ByteBuf对象
+3.slice方法。将一个ByteBuf对象切分成多个ByteBuf对象

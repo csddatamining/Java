@@ -1,0 +1,5 @@
+Strategy for defining immutable objects
+    1.Don't provide setter method
+    2.make all fields final and private
+    3.Don't allow subclass to override methods
+    4.If the instance fields include references to mutable objects, don't allow those objects to be changed
