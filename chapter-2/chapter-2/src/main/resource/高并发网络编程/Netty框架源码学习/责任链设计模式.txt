@@ -42,3 +42,6 @@ ChannelPipeline是线程安全的，CHannelHandler可以在任何时候添加或
 一般操作，初始化的时候增加进去，较少删除。
 
 handle的执行
+
+用户在管道中有一个或多个channelhandler来接受I/O事件和请求I/O操作
+一个典型的服务器在每个通道的管道中都有以下处理程序，但根据协议和业务逻辑

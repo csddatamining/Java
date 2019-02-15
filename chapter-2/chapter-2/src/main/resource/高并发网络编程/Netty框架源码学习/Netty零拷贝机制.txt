@@ -42,6 +42,17 @@ Unsafe的实现
 unsafe意味着不安全的操作。但是更底层的操作会带来性能提升和特殊功能，Netty中会尽力使用unsafe
 
 PooledByteBuf对象、内存复用
+PoolThreadCache:PooledByteBufAllocator实例维护的一个线程变量
+多种分类的MemoryRegionCache数组用作内存缓存，MemoryRegionCache内部是链表队列里面存Chunk
+PoolChunk里面维护了内存引用，内存复用的做法就是把buf的memory指向chunk的memory
+
+Netty默认使用的是
+PooledUnsafeDirectByteBuf
+Pooled：复用
+Unsafe：快
+Direct：快
+建议开发人员使用UnpooledHeapByteBuf
+
 
 零拷贝机制
 Netty的零拷贝机制，是一种应用层的实现。和底层JVM、操作系统内存机制并无过多关联
