@@ -1,0 +1,13 @@
+APR+异步Servlet
+
+NIO+异步Servlet
+Tomcat8开始，默认NIO方式
+非阻塞读取请求信息，非阻塞处理下一个请求，完全异步
+
+NIO处理流程
+1.接收器接受套接字
+2.接收器从缓存中检索nioChannel对象
+3.Pollerthrea将nioChannel注册到它的选择器IO时间
+4.轮询器将nioChannel分配给一个work线程来处理请求
+5.SocketProcessor完成对请求的处理和返回
+
