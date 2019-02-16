@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.study.chapter-3</groupId>
-    <artifactId>performance</artifactId>
-    <version>1.1.0</version>
+    <artifactId>JVMAnalyze</artifactId>
+    <version>0.0.1</version>
 
     <name>chapter-3</name>
     <description>性能优化章节代码</description>
