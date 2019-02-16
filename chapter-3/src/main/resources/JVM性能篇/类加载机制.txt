@@ -16,7 +16,7 @@ JVM用来存储加载的类信息、常量、静态变量、变异后的代码�
 一个Java程序运行，最少有三个类加载器实例，负责不同类的加载
 1.Bootstrap loader核心类库加载器
 C/C++实现，无对应Java类：null
-加载JRE_HOMT/jre/lib目录，或用户配置的目录
+加载JRE_HOME/jre/lib目录，或用户配置的目录
 JDK核心类库rt.jar...String...
 2.Extension Class Loader扩展类库加载器
 ExtClassLoader的实例：
