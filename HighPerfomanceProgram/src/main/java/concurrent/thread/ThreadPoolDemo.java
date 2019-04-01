@@ -112,7 +112,7 @@ public class ThreadPoolDemo {
         // 而线程池中又没有空闲的线程能够从SynchronousQueue队列实例中取一个任务，
         // 那么相应的offer方法调用就会失败（即任务没有被存入工作队列）。
         // 此时，ThreadPoolExecutor会新建一个新的工作者线程用于对这个入队列失败的任务进行处理（假设此时线程池的大小还未达到其最大线程池大小maximumPoolSize）。
-
+//适合无法预估或动态变化因素较多，希望快速执行任务
 //         和Executors.newCachedThreadPool()一样的
 //        ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
         ThreadPoolExecutor threadPoolExecutor =
@@ -127,7 +127,8 @@ public class ThreadPoolDemo {
     }
 
     /**
-     * 5、 定时执行线程池信息：3秒后执行，一次性任务，到点就执行 <br/> 核心线程数量5，最大数量Integer.MAX_VALUE，DelayedWorkQueue延时队列，超出核心线程数量的线程存活时间：0秒
+     * 5、 定时执行线程池信息：3秒后执行，一次性任务，到点就执行 <br/>
+     * 核心线程数量5，最大数量Integer.MAX_VALUE，DelayedWorkQueue延时队列，超出核心线程数量的线程存活时间：0秒
      */
     private void threadPoolExecutorTest5() throws Exception {
         // 和Executors.newScheduledThreadPool()一样的
@@ -143,7 +144,8 @@ public class ThreadPoolDemo {
     }
 
     /**
-     * 6、 定时执行线程池信息：线程固定数量5 ，<br/> 核心线程数量5，最大数量Integer.MAX_VALUE，DelayedWorkQueue延时队列，超出核心线程数量的线程存活时间：0秒
+     * 6、 定时执行线程池信息：线程固定数量5 ，
+     * <br/> 核心线程数量5，最大数量Integer.MAX_VALUE，DelayedWorkQueue延时队列，超出核心线程数量的线程存活时间：0秒
      */
     private void threadPoolExecutorTest6() throws Exception {
         ScheduledThreadPoolExecutor threadPoolExecutor = new ScheduledThreadPoolExecutor(5);
