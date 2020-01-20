@@ -18,18 +18,50 @@ JVM内存模型
 3.错误难定位
 4.无法用肉眼测试程序准确性
 
+指令重排序
+Java编程语言的语义允许编译器和微处理器执行优化，这些优化可以与不正确的代码交互，从而产生看似矛盾的行为
+
+jitwatch的使用可直接参考这个操作博客
+http://www.cnblogs.com/stevenczp/p/7975776.html
+https://www.cnblogs.com/stevenczp/p/7978554.html
+1、 输出jit日志
+（windows）在jre/bin/server  放置hsdis动态链接库
+eclise、idea等工具，加上JVM参数
+-server -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:+LogCompilation -XX:LogFile=jit.log
+2、 工具安装
+下载  https://github.com/AdoptOpenJDK/jitwatch
+解压 通过maven运行
+mvn clean compile exec:java
+3、 配置jitwatch
+页面选择 config， 配置要调试的项目src源码路径，和class编译路径
+打开jit.log
+点击start
+4、 在分析的结果中，选中指定的类，再选择右侧的具体方法，则弹出jit编译结果
+
+
 一个线程修改的值是否能被另一个线程可见，可见性问题
+
+内存模型的含义
+内存模型描述程序的可能行为
+Java编程语言内存模型通过检查执行跟踪中的每个读操作，并根据某些规则检查该读操作观察到的写操作是否有效来工作。
+只要程序的所有执行产生的结果都可以由内存模型预测。具体的实现者任意实现，包括操作的重新排序和删除不必要的同步。
+内存模型决定了在程序的每个点上可以读取什么值。
 
 Shared Variables共享变量描述
 可以在线程间共享的内存称为共享内存或堆内存
 所有实例字段、静态字段和数组元素都存储在堆内存中
 如果至少有一个访问是写的，那么对同一变量的两次访问（读或写）是冲突的
+定义在：https://docs.oracle.com/javase/specs/jls/se8/html/jls-17.html#jls-17.4.1
+docs.oracle.com
 
 线程操作的定义
 write/read
 lock/unlock
 外部操作（socket等）
 启动和终止
+程序顺序：如果一个程序没有数据竞争，那么程序的所有执行看起来都是顺序一致的
+本规范值设计线程间的操作
+
 
 同步规则的定义：
 1.对于监视器m的解锁与所有后续操作对于m的加锁同步
