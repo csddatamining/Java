@@ -60,7 +60,7 @@ lock/unlock
 外部操作（socket等）
 启动和终止
 程序顺序：如果一个程序没有数据竞争，那么程序的所有执行看起来都是顺序一致的
-本规范值设计线程间的操作
+本规范只涉及线程间的操作
 
 
 同步规则的定义：
@@ -102,25 +102,28 @@ jvm工作方式，有多块内存区域，处理放在主内存中，读数据�
 
 内存模型决定了在程序的每个点可以读取什么
 
-jitwatch的使用
-可直接参考这个操作博客
-http://www.cnblogs.com/stevenczp/p/7975776.html
-https://www.cnblogs.com/stevenczp/p/7978554.html
-1、 输出jit日志
-（windows）在jre/bin/server  放置hsdis动态链接库
-eclise、idea等工具，加上JVM参数
--server -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:+LogCompilation -XX:LogFile=jit.log
-2、 工具安装
-下载  https://github.com/AdoptOpenJDK/jitwatch
-解压 通过maven运行
-mvn clean compile exec:java
-3、 配置jitwatch
-页面选择 config， 配置要调试的项目src源码路径，和class编译路径
-打开jit.log
-点击start
-4、 在分析的结果中，选中指定的类，再选择右侧的具体方法，则弹出jit编译结果
 
 final在JVM中的处理
 final在该对象的构造函数中设置对象的字段，当线程看到该对象时，将始终看到该对象的final字段的正确构造版本
+伪代码示例：f = new finalDemo(); 读取到的f.x一定是最新，x为final字段
 
 如果在构造函数中设置字段后发生读取，则会看到该final字段分配的值，否则它将看到默认值
+伪代码示例：public finalDemo(){x=1;y=x};y会等于1;
+
+读取该共享对象的final成员变量之前，先要读取共享对象。
+伪代码示例：r = new ReferenceObj(); k =r.f;这两个操作不能重排序
+
+通常static final是不可以修改的字段。然而System.in,System.out和System.err是static final字段，遗留原因
+必须允许通过set方法改变，我们将这些字段称为写保护，以区别普通final字段;
+
+Word Tearing字节处理
+一个字段或元素的更新不得与任何其他字段或元素的读取或更新交互
+特别是，分别更新字节数组的相邻元素的两个线程不得干涉或交互，也不需要同步以确保顺序一致性
+有些处理器（尤其早期Alphas处理器）没有提供写单个字节的功能
+在这样的处理器上更新byte数组，若只是简单地读取整个内容，更新对应的字节，然后将整个内容再回写内存，将是不合法的。
+这个问题有时候被称为“字节裂(word tearing)”，在单独更新单个字节有难度的处理器上，就需要寻求其他方式了
+
+double和long的特殊处理
+虚拟机规范中，写64位的double和long分成了两次32位值的操作
+由于不是原子操作，可能导致读取到某次写操作中64位的前32位，以及另一次写操作的后32位
+读写volatile的long和double总是原子的。读写引用也总是原子的
