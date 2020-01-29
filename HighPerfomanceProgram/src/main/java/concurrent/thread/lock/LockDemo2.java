@@ -5,10 +5,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * 使用Atomic进行原子操作
  *
- * @author chenshuaiduo
+ * @author Shuaiduoooo
  * @date 2019-01-29 11:31
  */
-public class LockDemo2 {
+public class  LockDemo2 {
 
     AtomicInteger i = new AtomicInteger(0);
 

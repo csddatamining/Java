@@ -41,12 +41,43 @@ JAVA中的sun.misc.Unsafe类，提供了compareAndSwapInt()和compareAndSwapLong
 
 
 六、J.U.C包内的原子操作封装类（java.util.concurrent）
+AtomicBoolean：原子更新布尔类型
+AtomicInteger：原子更新整形
+AtomicLong：原子更新长整形
+
+AtomicIntegerArray：原子更新整形数组里的元素
+AtomicLongArray：原子更新长整形数组里的元素
+AtomicReferenceArray：原子更新引用类型数组里的元素
+
 AtomicIntegerFieldUpdater:原子更新整形的字段的更新器
-AtomicLongFiledUpdater
-AtomicReferenceFieldUpdater
+AtomicLongFiledUpdater：原子更新长整形字段的更新器
+AtomicReferenceFieldUpdater：原子更新引用类型里的字段
+
+1.8更新
+更新器：DoubleAccumulator、LongAccumulator
+计数器：DoubleAdder、LongAdder
+计数器增强版，高并发下性能好
+频繁更新但不太频繁读取的汇总统计信息时使用
+分成多个操作单元不同线程更新不同单元
+只有需要汇总的时候才计算所有单元的操作
 
 CAS的三个问题
 1.循环+CAS，自旋的实现让所有线程都处于高频运行，争抢CPU执行时间的状态。如果操作长时间不成功，会带来很大的CPU资源消耗
 2.仅针对单个变量的操作，不能用于多个变量来实现原子操作
 3.ABA问题
 
+线程封闭概念
+多线程访问共享可变数据时，涉及到线程间数据同步的问题。并不是所有的时候，都要用到共享数据，所以线程封闭概念就提出来了
+数据封闭在各自的线程之中，就不需要同步，这种通过将数据封闭在线程中而避免用同步的技术称为线程封闭。
+线程封闭具体的体现有：ThreadLocal、局部变量
+
+ThreadLocal
+ThreadLocal是Java里一种特殊的变量。
+它是一个线程级别变量，在每个线程都有一个ThreadLocal就是每个线程都拥有了自己独立的一个变量，
+竞争条件被彻底消除了，在并发模式下是绝对安全的变量
+用法：ThreadLocal<T> var = new ThreadLocal<T>();
+会自动在每一个线程上创建一个T的副本，副本之间彼此独立，互不影响。可以用TheadLocal存储一些参数，以便在线程中多个方法使用，用来代替方法传参的做法。
+
+栈封闭
+局部变量的固有属性之一就是封闭在线程中。
+他们位于执行线程的栈中，其他线程无法访问这个栈。

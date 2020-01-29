@@ -15,13 +15,13 @@ public class LongAdderDemo {
         for (int i = 0; i < 3; i++) {
             new Thread(() -> {
                 long starttime = System.currentTimeMillis();
-                while (System.currentTimeMillis() - starttime < 2000) { // 运行两秒
+                while (System.currentTimeMillis() - starttime < 1000) { // 运行一秒
                     synchronized (this) {
                         ++count;
                     }
                 }
                 long endtime = System.currentTimeMillis();
-                System.out.println("SyncThread spend:" + (endtime - starttime) + "ms" + " v" + count);
+                System.out.println("SyncThread spend:" + (endtime - starttime) + "ms" + "  count:" + count);
             }).start();
         }
     }
@@ -33,11 +33,11 @@ public class LongAdderDemo {
         for (int i = 0; i < 3; i++) {
             new Thread(() -> {
                 long starttime = System.currentTimeMillis();
-                while (System.currentTimeMillis() - starttime < 2000) { // 运行两秒
+                while (System.currentTimeMillis() - starttime < 1000) { // 运行一秒
                     acount.incrementAndGet(); // acount++;
                 }
                 long endtime = System.currentTimeMillis();
-                System.out.println("AtomicThread spend:" + (endtime - starttime) + "ms" + " v-" + acount.incrementAndGet());
+                System.out.println("AtomicThread spend:" + (endtime - starttime) + "ms" + " count:" + acount.incrementAndGet());
             }).start();
         }
     }
@@ -49,11 +49,11 @@ public class LongAdderDemo {
         for (int i = 0; i < 3; i++) {
             new Thread(() -> {
                 long starttime = System.currentTimeMillis();
-                while (System.currentTimeMillis() - starttime < 2000) { // 运行两秒
+                while (System.currentTimeMillis() - starttime < 1000) { // 运行一秒
                     lacount.increment();
                 }
                 long endtime = System.currentTimeMillis();
-                System.out.println("LongAdderThread spend:" + (endtime - starttime) + "ms" + " v-" + lacount.sum());
+                System.out.println("LongAdderThread spend:" + (endtime - starttime) + "ms" + " count:" + lacount.sum());
             }).start();
         }
     }
