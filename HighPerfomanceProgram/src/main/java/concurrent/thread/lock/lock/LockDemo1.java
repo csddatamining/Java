@@ -1,4 +1,4 @@
-package main.java.concurrent.thread.lock;
+package main.java.concurrent.thread.lock.lock;
 
 import sun.misc.Unsafe;
 
