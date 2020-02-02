@@ -29,7 +29,9 @@ public class CustomLock implements Lock {
 
     @Override
     public void lock() {
-
+        if (!tryLock()){
+            waiters.offer(Thread.currentThread());
+        }
     }
 
     @Override
