@@ -13,3 +13,6 @@ release、releaseShared：定义释放资源的逻辑，释放之后，通知后
 tryRelease、tryReleaseShared：实际执行资源释放的操作，具体的AQS使用者去实现
 
 单向链表、循环链表数据结构
+
+资源占用流程
+acquire-->tryAcquire-->加入队尾-->寻找前置-->前置head？-->是（tryAcquire）/否（等待park unpark interrupt）-->end
