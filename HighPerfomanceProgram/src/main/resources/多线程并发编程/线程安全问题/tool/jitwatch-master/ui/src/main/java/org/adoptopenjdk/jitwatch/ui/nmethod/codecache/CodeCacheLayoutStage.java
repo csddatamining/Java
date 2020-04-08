@@ -3,6 +3,7 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.nmethod.codecache;
 
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.S_EMPTY;
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.S_HEX_PREFIX;
@@ -15,7 +16,7 @@ import org.adoptopenjdk.jitwatch.compilation.codecache.CodeCacheWalkerResult;
 import org.adoptopenjdk.jitwatch.model.CodeCacheEvent;
 import org.adoptopenjdk.jitwatch.model.Compilation;
 import org.adoptopenjdk.jitwatch.model.IMetaMember;
-import JITWatchUI;
+import org.adoptopenjdk.jitwatch.ui.main.JITWatchUI;
 import org.adoptopenjdk.jitwatch.ui.nmethod.AbstractNMethodStage;
 import org.adoptopenjdk.jitwatch.util.UserInterfaceUtil;
 

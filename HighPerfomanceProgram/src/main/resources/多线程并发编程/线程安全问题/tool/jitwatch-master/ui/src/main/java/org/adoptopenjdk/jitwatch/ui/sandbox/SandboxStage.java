@@ -1,8 +1,9 @@
 /*
- * Copyright (c) 2013-2020 Chris Newland.
+ * Copyright (c) 2013-2016 Chris Newland.
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.sandbox;
 
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.S_ASTERISK;
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.S_EMPTY;
@@ -21,7 +22,6 @@ import java.io.File;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,10 +37,10 @@ import org.adoptopenjdk.jitwatch.process.IExternalProcess;
 import org.adoptopenjdk.jitwatch.sandbox.Sandbox;
 import org.adoptopenjdk.jitwatch.ui.Dialogs;
 import org.adoptopenjdk.jitwatch.ui.Dialogs.Response;
-import IStageAccessProxy;
-import JITWatchUI;
-import IStageClosedListener;
-import StageManager;
+import org.adoptopenjdk.jitwatch.ui.main.IStageAccessProxy;
+import org.adoptopenjdk.jitwatch.ui.main.JITWatchUI;
+import org.adoptopenjdk.jitwatch.ui.stage.IStageClosedListener;
+import org.adoptopenjdk.jitwatch.ui.stage.StageManager;
 import org.adoptopenjdk.jitwatch.util.DisassemblyUtil;
 import org.adoptopenjdk.jitwatch.util.UserInterfaceUtil;
 import org.slf4j.Logger;
@@ -85,7 +85,7 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 	private TabPane tabPane;
 
 	private Button btnSandboxConfig;
-
+	
 	private Button btnRun;
 
 	private SandboxConfigStage sandboxConfigStage;
@@ -114,7 +114,8 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 
 		tabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>()
 		{
-			@Override public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1)
+			@Override
+			public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1)
 			{
 				Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
 
@@ -140,7 +141,8 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		Button btnNewEditor = new Button("New Editor");
 		btnNewEditor.setOnAction(new EventHandler<ActionEvent>()
 		{
-			@Override public void handle(ActionEvent e)
+			@Override
+			public void handle(ActionEvent e)
 			{
 				addEditor(null);
 			}
@@ -149,7 +151,8 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		Button btnOpen = new Button("Open");
 		btnOpen.setOnAction(new EventHandler<ActionEvent>()
 		{
-			@Override public void handle(ActionEvent e)
+			@Override
+			public void handle(ActionEvent e)
 			{
 				if (tabPane.getSelectionModel().getSelectedItem() == null)
 				{
@@ -188,7 +191,8 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		Button btnSave = new Button("Save");
 		btnSave.setOnAction(new EventHandler<ActionEvent>()
 		{
-			@Override public void handle(ActionEvent e)
+			@Override
+			public void handle(ActionEvent e)
 			{
 				Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
 
@@ -208,7 +212,8 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		btnSandboxConfig = new Button("Configure Sandbox");
 		btnSandboxConfig.setOnAction(new EventHandler<ActionEvent>()
 		{
-			@Override public void handle(ActionEvent e)
+			@Override
+			public void handle(ActionEvent e)
 			{
 				sandboxConfigStage = new SandboxConfigStage(SandboxStage.this, parser.getConfig());
 
@@ -221,7 +226,8 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		Button btnResetSandbox = new Button("Reset Sandbox");
 		btnResetSandbox.setOnAction(new EventHandler<ActionEvent>()
 		{
-			@Override public void handle(ActionEvent e)
+			@Override
+			public void handle(ActionEvent e)
 			{
 				Response resp = Dialogs.showYesNoDialog(SandboxStage.this, "Reset Sandbox?",
 						"Delete all modified Sandbox sources and classes?");
@@ -237,7 +243,8 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 
 		comboBoxVMLanguage.valueProperty().addListener(new ChangeListener<String>()
 		{
-			@Override public void changed(ObservableValue<? extends String> ov, String oldVal, String newVal)
+			@Override
+			public void changed(ObservableValue<? extends String> ov, String oldVal, String newVal)
 			{
 				if (newVal != null)
 				{
@@ -249,10 +256,11 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		btnRun = new Button("Run");
 		btnRun.setOnAction(new EventHandler<ActionEvent>()
 		{
-			@Override public void handle(ActionEvent e)
+			@Override
+			public void handle(ActionEvent e)
 			{
 				btnRun.setDisable(true);
-
+				
 				Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
 
 				if (selectedTab != null)
@@ -274,12 +282,13 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		Button btnOutput = new Button("View Output");
 		btnOutput.setOnAction(new EventHandler<ActionEvent>()
 		{
-			@Override public void handle(ActionEvent e)
+			@Override
+			public void handle(ActionEvent e)
 			{
 				IExternalProcess lastProcess = sandbox.getLastProcess();
-
+				
 				String outputString;
-
+				
 				if (lastProcess != null)
 				{
 					outputString = lastProcess.getOutputStream();
@@ -288,15 +297,15 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 				{
 					outputString = "No output";
 				}
-
+				
 				showOutput(outputString);
 			}
 		});
-
+		
 		BorderPane borderPane = new BorderPane();
 
 		Scene scene = UserInterfaceUtil.getScene(borderPane, JITWatchUI.WINDOW_WIDTH, JITWatchUI.WINDOW_HEIGHT);
-
+		
 		HBox hBoxTools = new HBox();
 
 		hBoxTools.setSpacing(10);
@@ -309,13 +318,13 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		hBoxTools.getChildren().add(btnResetSandbox);
 		hBoxTools.getChildren().add(comboBoxVMLanguage);
 		hBoxTools.getChildren().add(btnRun);
-		hBoxTools.getChildren().add(btnOutput);
-
+		hBoxTools.getChildren().add(btnOutput);		
+		
 		Region spacer = new Region();
 		HBox.setHgrow(spacer, Priority.ALWAYS);
-
+		
 		Button buttonSnapShot = UserInterfaceUtil.getSnapshotButton(scene, "Sandbox");
-
+		
 		hBoxTools.getChildren().add(spacer);
 		hBoxTools.getChildren().add(buttonSnapShot);
 
@@ -337,7 +346,8 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 
 		setOnCloseRequest(new EventHandler<WindowEvent>()
 		{
-			@Override public void handle(WindowEvent arg0)
+			@Override
+			public void handle(WindowEvent arg0)
 			{
 				saveEditorPaneConfig();
 
@@ -348,7 +358,8 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		loadLastEditorPanes();
 	}
 
-	@Override public void setModified(EditorPane pane, boolean isModified)
+	@Override
+	public void setModified(EditorPane pane, boolean isModified)
 	{
 		for (Tab tab : tabPane.getTabs())
 		{
@@ -381,13 +392,15 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		}
 	}
 
-	@Override public void runFile(final EditorPane pane)
+	@Override
+	public void runFile(final EditorPane pane)
 	{
 		saveUnsavedEditors();
 
 		new Thread(new Runnable()
 		{
-			@Override public void run()
+			@Override
+			public void run()
 			{
 				runSandbox(pane.getSourceFile());
 				btnRun.setDisable(false);
@@ -399,10 +412,7 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 	{
 		taLog.setText(S_EMPTY);
 		log("Sandbox ready");
-
-		Path disassemblerPath = DisassemblyUtil.getDisassemblerFilePath();
-
-		log("Disassembler available: " + (disassemblerPath != null ? disassemblerPath : "Not found"));
+		log("Disassembler available: " + (DisassemblyUtil.isDisassemblerAvailable() ? DisassemblyUtil.getDisassemblerFilePath() : "Not found"));
 	}
 
 	private void loadLastEditorPanes()
@@ -448,7 +458,8 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 
 		EventHandler<Event> closeHandler = new EventHandler<Event>()
 		{
-			@Override public void handle(Event e)
+			@Override
+			public void handle(Event e)
 			{
 				if (pane.isModified())
 				{
@@ -526,7 +537,8 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		{
 			Platform.runLater(new Runnable()
 			{
-				@Override public void run()
+				@Override
+				public void run()
 				{
 					taLog.setText(S_EMPTY);
 				}
@@ -569,7 +581,8 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		}
 	}
 
-	@Override public void addSourceFolder(File sourceFolder)
+	@Override
+	public void addSourceFolder(File sourceFolder)
 	{
 		config.addSourceFolder(sourceFolder);
 	}
@@ -584,45 +597,53 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		}
 	}
 
-	@Override public void handleLogEntry(String text)
+	@Override
+	public void handleLogEntry(String text)
 	{
 		log(text);
 	}
-
-	@Override public void handleErrorEntry(String text)
+	
+	@Override
+	public void handleErrorEntry(String text)
 	{
 		log(text);
 	}
-
-	@Override public void log(final String text)
+	
+	@Override
+	public void log(final String text)
 	{
 		Platform.runLater(new Runnable()
 		{
-			@Override public void run()
+			@Override
+			public void run()
 			{
 				taLog.appendText(text + S_NEWLINE);
 			}
 		});
 	}
 
-	@Override public void openTriView(final IMetaMember member)
+	@Override
+	public void openTriView(final IMetaMember member)
 	{
 		log("Launching TriView for " + member);
 
 		Platform.runLater(new Runnable()
 		{
-			@Override public void run()
+			@Override
+			public void run()
 			{
 				accessProxy.openTriView(member, 0);
 			}
 		});
 	}
 
-	@Override public void showOutput(final String output)
+	@Override
+	public void showOutput(final String output)
 	{
 		Platform.runLater(new Runnable()
 		{
-			@Override public void run()
+			@Override
+			public void run()
 			{
 				// TODO perhaps filter out classloading statements?
 				accessProxy.openTextViewer("Sandbox Output", output, false, false);
@@ -630,18 +651,21 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		});
 	}
 
-	@Override public void showError(final String error)
+	@Override
+	public void showError(final String error)
 	{
 		Platform.runLater(new Runnable()
 		{
-			@Override public void run()
+			@Override
+			public void run()
 			{
 				accessProxy.openTextViewer("Error", error, false, false);
 			}
 		});
 	}
 
-	@Override public void handleStageClosed(Stage stage)
+	@Override
+	public void handleStageClosed(Stage stage)
 	{
 		StageManager.closeStage(stage);
 
@@ -702,20 +726,23 @@ public class SandboxStage extends Stage implements ISandboxStage, IStageClosedLi
 		config.saveConfig();
 	}
 
-	@Override public void handleError(final String title, final String body)
+	@Override
+	public void handleError(final String title, final String body)
 	{
 		logger.error(title);
 
 		Platform.runLater(new Runnable()
 		{
-			@Override public void run()
+			@Override
+			public void run()
 			{
 				Dialogs.showOKDialog(SandboxStage.this, title, body);
 			}
 		});
 	}
 
-	@Override public Stage getStageForChooser()
+	@Override
+	public Stage getStageForChooser()
 	{
 		return this;
 	}

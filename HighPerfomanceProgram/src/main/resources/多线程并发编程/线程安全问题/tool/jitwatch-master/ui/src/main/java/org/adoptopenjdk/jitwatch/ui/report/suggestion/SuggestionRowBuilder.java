@@ -3,13 +3,14 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.report.suggestion;
 
 import org.adoptopenjdk.jitwatch.report.Report;
 import org.adoptopenjdk.jitwatch.ui.report.IReportRowBean;
-import IntegerTableCell;
-import MemberTableCell;
-import TextWrapTableCell;
-import TextTableCell;
+import org.adoptopenjdk.jitwatch.ui.report.cell.IntegerTableCell;
+import org.adoptopenjdk.jitwatch.ui.report.cell.MemberTableCell;
+import org.adoptopenjdk.jitwatch.ui.report.cell.TextWrapTableCell;
+import org.adoptopenjdk.jitwatch.ui.report.cell.TextTableCell;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;

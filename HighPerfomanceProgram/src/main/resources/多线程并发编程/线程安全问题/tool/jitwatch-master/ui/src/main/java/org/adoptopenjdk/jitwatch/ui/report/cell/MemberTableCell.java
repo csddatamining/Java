@@ -3,6 +3,7 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.report.cell;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,7 +16,7 @@ import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.S_EMPTY;
 import org.adoptopenjdk.jitwatch.model.Compilation;
 import org.adoptopenjdk.jitwatch.model.IMetaMember;
 import org.adoptopenjdk.jitwatch.report.Report;
-import IStageAccessProxy;
+import org.adoptopenjdk.jitwatch.ui.main.IStageAccessProxy;
 import org.adoptopenjdk.jitwatch.ui.report.IReportRowBean;
 
 public class MemberTableCell extends TableCell<IReportRowBean, Report>

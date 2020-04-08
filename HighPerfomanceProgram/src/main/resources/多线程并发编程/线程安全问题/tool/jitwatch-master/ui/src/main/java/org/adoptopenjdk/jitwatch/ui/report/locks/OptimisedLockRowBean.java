@@ -3,6 +3,7 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.report.locks;
 
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.S_EMPTY;
 

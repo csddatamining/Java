@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2019 Chris Newland.
+ * Copyright (c) 2013-2018 Chris Newland.
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
@@ -52,7 +52,7 @@ public class JITDataModel implements IReadOnlyJITDataModel
 
 	private Tag endOfLog;
 
-	private int jdkMajorVersion;
+	private String vmVersionRelease;
 
 	private long baseTimestamp = 0;
 
@@ -62,14 +62,56 @@ public class JITDataModel implements IReadOnlyJITDataModel
 		stats = new JITStats();
 	}
 
-	public void setJDKMajorVersion(int version)
+	public void setVmVersionRelease(String release)
 	{
-		this.jdkMajorVersion = version;
+		this.vmVersionRelease = release;
 	}
 
-	@Override public int getJDKMajorVersion()
+	@Override
+	public int getJDKMajorVersion()
 	{
-		return jdkMajorVersion;
+		int result = 8; // fallback
+
+		if (this.vmVersionRelease != null)
+		{
+			if (this.vmVersionRelease.contains("1.7"))
+			{
+				result = 7;
+			}
+			else if (this.vmVersionRelease.contains("1.8"))
+			{
+				result = 8;
+			}
+			else
+			{
+				StringBuilder builder = new StringBuilder();
+
+				for (int i = 0; i < vmVersionRelease.length(); i++)
+				{
+					char c = vmVersionRelease.charAt(i);
+
+					if (Character.isDigit(c))
+					{
+						builder.append(c);
+					}
+					else
+					{
+						break;
+					}
+				}
+
+				try
+				{
+					result = Integer.parseInt(builder.toString());
+				}
+				catch (NumberFormatException nfe)
+				{
+					logger.warn("Could not determine JDK version from log: {}", vmVersionRelease);
+				}
+			}
+		}
+
+		return result;
 	}
 
 	public void reset()
@@ -97,7 +139,8 @@ public class JITDataModel implements IReadOnlyJITDataModel
 		codeCacheTagList.clear();
 	}
 
-	@Override public List<CompilerThread> getCompilerThreads()
+	@Override
+	public List<CompilerThread> getCompilerThreads()
 	{
 		List<CompilerThread> result = new ArrayList<>();
 
@@ -111,7 +154,8 @@ public class JITDataModel implements IReadOnlyJITDataModel
 
 		Collections.sort(result, new Comparator<CompilerThread>()
 		{
-			@Override public int compare(CompilerThread o1, CompilerThread o2)
+			@Override
+			public int compare(CompilerThread o1, CompilerThread o2)
 			{
 				return o1.getThreadName().compareTo(o2.getThreadName());
 			}
@@ -120,7 +164,8 @@ public class JITDataModel implements IReadOnlyJITDataModel
 		return Collections.unmodifiableList(result);
 	}
 
-	@Override public CompilerThread createCompilerThread(String threadId, String threadName)
+	@Override
+	public CompilerThread createCompilerThread(String threadId, String threadName)
 	{
 		CompilerThread compilerThread = new CompilerThread(threadId, threadName);
 
@@ -131,17 +176,20 @@ public class JITDataModel implements IReadOnlyJITDataModel
 		return compilerThread;
 	}
 
-	@Override public CompilerThread getCompilerThread(String threadId)
+	@Override
+	public CompilerThread getCompilerThread(String threadId)
 	{
 		return compilerThreads.get(threadId);
 	}
 
-	@Override public PackageManager getPackageManager()
+	@Override
+	public PackageManager getPackageManager()
 	{
 		return packageManager;
 	}
 
-	@Override public JITStats getJITStats()
+	@Override
+	public JITStats getJITStats()
 	{
 		return stats;
 	}
@@ -155,7 +203,8 @@ public class JITDataModel implements IReadOnlyJITDataModel
 		}
 	}
 
-	@Override public List<JITEvent> getEventListCopy()
+	@Override
+	public List<JITEvent> getEventListCopy()
 	{
 		synchronized (jitEvents)
 		{
@@ -241,7 +290,8 @@ public class JITDataModel implements IReadOnlyJITDataModel
 		}
 	}
 
-	@Override public IMetaMember findMetaMember(MemberSignatureParts msp)
+	@Override
+	public IMetaMember findMetaMember(MemberSignatureParts msp)
 	{
 		IMetaMember result = null;
 
@@ -286,7 +336,8 @@ public class JITDataModel implements IReadOnlyJITDataModel
 		return result;
 	}
 
-	@Override public MetaClass buildAndGetMetaClass(Class<?> clazz)
+	@Override
+	public MetaClass buildAndGetMetaClass(Class<?> clazz)
 	{
 		MetaClass resultMetaClass = null;
 
@@ -387,12 +438,14 @@ public class JITDataModel implements IReadOnlyJITDataModel
 		this.endOfLog = tag;
 	}
 
-	@Override public Tag getEndOfLogTag()
+	@Override
+	public Tag getEndOfLogTag()
 	{
 		return endOfLog;
 	}
 
-	@Override public List<CodeCacheEvent> getCodeCacheEvents()
+	@Override
+	public List<CodeCacheEvent> getCodeCacheEvents()
 	{
 		synchronized (codeCacheTagList)
 		{
@@ -400,7 +453,8 @@ public class JITDataModel implements IReadOnlyJITDataModel
 		}
 	}
 
-	@Override public long getBaseTimestamp()
+	@Override
+	public long getBaseTimestamp()
 	{
 		return baseTimestamp;
 	}

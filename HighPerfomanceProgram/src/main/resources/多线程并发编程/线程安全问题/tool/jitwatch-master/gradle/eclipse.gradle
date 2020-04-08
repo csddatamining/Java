@@ -9,7 +9,4 @@ eclipse {
 	}
 }
 
-gradle.projectsEvaluated {
-    def systemConfigurations = subprojects.collect { it.configurations.findByName("system") }.findAll { it != null}
-    eclipse.classpath.plusConfigurations += [systemConfigurations]
-}
+eclipse.classpath.plusConfigurations += [configurations.system]

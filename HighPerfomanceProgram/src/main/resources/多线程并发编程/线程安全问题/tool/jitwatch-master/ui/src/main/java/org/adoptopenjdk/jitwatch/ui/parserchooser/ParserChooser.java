@@ -4,6 +4,8 @@
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
 
+package org.adoptopenjdk.jitwatch.ui.parserchooser;
+
 import org.adoptopenjdk.jitwatch.parser.ParserType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

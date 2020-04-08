@@ -3,11 +3,12 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.report.eliminatedallocation;
 
 import org.adoptopenjdk.jitwatch.report.Report;
-import IReportRowBean;
-import LinkedBCICell;
-import TextTableCell;
+import org.adoptopenjdk.jitwatch.ui.report.IReportRowBean;
+import org.adoptopenjdk.jitwatch.ui.report.cell.LinkedBCICell;
+import org.adoptopenjdk.jitwatch.ui.report.cell.TextTableCell;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;

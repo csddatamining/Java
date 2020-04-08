@@ -3,6 +3,7 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.triview;
 
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.C_CLOSE_PARENTHESES;
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.C_DOLLAR;
@@ -32,14 +33,14 @@ import org.adoptopenjdk.jitwatch.model.bytecode.MemberBytecode;
 import org.adoptopenjdk.jitwatch.model.bytecode.SourceMapper;
 import org.adoptopenjdk.jitwatch.ui.Dialogs;
 import org.adoptopenjdk.jitwatch.ui.compilationchooser.CompilationChooser;
-import ICompilationChangeListener;
-import IMemberSelectedListener;
-import JITWatchUI;
-import AssemblyLabel;
-import ViewerAssembly;
-import BytecodeLabel;
-import ViewerBytecode;
-import ViewerSource;
+import org.adoptopenjdk.jitwatch.ui.main.ICompilationChangeListener;
+import org.adoptopenjdk.jitwatch.ui.main.IMemberSelectedListener;
+import org.adoptopenjdk.jitwatch.ui.main.JITWatchUI;
+import org.adoptopenjdk.jitwatch.ui.triview.assembly.AssemblyLabel;
+import org.adoptopenjdk.jitwatch.ui.triview.assembly.ViewerAssembly;
+import org.adoptopenjdk.jitwatch.ui.triview.bytecode.BytecodeLabel;
+import org.adoptopenjdk.jitwatch.ui.triview.bytecode.ViewerBytecode;
+import org.adoptopenjdk.jitwatch.ui.triview.source.ViewerSource;
 import org.adoptopenjdk.jitwatch.util.UserInterfaceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

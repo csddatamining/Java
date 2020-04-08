@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2020 Chris Newland.
+ * Copyright (c) 2013-2017 Chris Newland.
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
@@ -74,8 +74,6 @@ public class AssemblyProcessor
 
 		line = StringUtil.replaceXMLEntities(line);
 
-		String trimmedLine = line.trim();
-
 		if (DEBUG_LOGGING_ASSEMBLY)
 		{
 			logger.debug("handleLine:{}", line);
@@ -108,7 +106,7 @@ public class AssemblyProcessor
 			line = S_HASH + S_SPACE + line;
 		}
 
-		if (trimmedLine.startsWith("total in heap"))
+		if (line.trim().startsWith("total in heap"))
 		{
 			String possibleNativeAddress = getStartAddress(line);
 
@@ -118,7 +116,7 @@ public class AssemblyProcessor
 			}
 		}
 
-		if (trimmedLine.endsWith(" bytes") || trimmedLine.startsWith("main code"))
+		if (line.trim().endsWith(" bytes"))
 		{
 			String possibleEntryAddress = getStartAddress(line);
 
@@ -128,13 +126,13 @@ public class AssemblyProcessor
 			}
 		}
 
-		if (trimmedLine.endsWith("</print_nmethod>"))
+		if (line.trim().endsWith("</print_nmethod>"))
 		{
 			complete();
 		}
 
-		if (line.startsWith(NATIVE_CODE_START) || line.startsWith("Compiled method") || line.startsWith(
-				"----------------------------------------------------------------------"))
+		if (line.startsWith(NATIVE_CODE_START) || line.startsWith("Compiled method")
+				|| line.startsWith("----------------------------------------------------------------------"))
 		{
 			if (DEBUG_LOGGING_ASSEMBLY)
 			{
@@ -232,7 +230,7 @@ public class AssemblyProcessor
 			{
 				if (DEBUG_LOGGING_ASSEMBLY)
 				{
-					logger.debug("Using assembly parser {}", parser.getClass().getName());
+				logger.debug("Using assembly parser {}", parser.getClass().getName());
 				}
 
 				AssemblyMethod assemblyMethod = parser.parseAssembly(asmString);

@@ -3,8 +3,9 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.launch;
 
-import JITWatchUI;
+import org.adoptopenjdk.jitwatch.ui.main.JITWatchUI;
 
 public final class LaunchUI
 {

@@ -3,6 +3,7 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.jarscan.visualiser;
 
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import UserInterfaceUtil;
+import org.adoptopenjdk.jitwatch.util.UserInterfaceUtil;
 
 import javafx.application.Application;
 import javafx.application.Platform;

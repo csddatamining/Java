@@ -3,6 +3,7 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.graphing;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ import org.adoptopenjdk.jitwatch.histo.IHistoVisitable;
 import org.adoptopenjdk.jitwatch.histo.InlineSizeHistoVisitable;
 import org.adoptopenjdk.jitwatch.histo.NativeSizeHistoWalker;
 import org.adoptopenjdk.jitwatch.model.IReadOnlyJITDataModel;
-import JITWatchUI;
+import org.adoptopenjdk.jitwatch.ui.main.JITWatchUI;
 import org.adoptopenjdk.jitwatch.util.UserInterfaceUtil;
 import static org.adoptopenjdk.jitwatch.util.UserInterfaceUtil.fix;
 

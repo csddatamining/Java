@@ -3,6 +3,7 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.report;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -11,18 +12,18 @@ import java.util.Set;
 
 import org.adoptopenjdk.jitwatch.core.JITWatchConstants;
 import org.adoptopenjdk.jitwatch.report.Report;
-import IStageAccessProxy;
-import JITWatchUI;
-import LinkedBCICell;
-import MemberTableCell;
+import org.adoptopenjdk.jitwatch.ui.main.IStageAccessProxy;
+import org.adoptopenjdk.jitwatch.ui.main.JITWatchUI;
+import org.adoptopenjdk.jitwatch.ui.report.cell.LinkedBCICell;
+import org.adoptopenjdk.jitwatch.ui.report.cell.MemberTableCell;
 import org.adoptopenjdk.jitwatch.ui.report.eliminatedallocation.EliminatedAllocationRowBean;
 import org.adoptopenjdk.jitwatch.ui.report.eliminatedallocation.EliminatedAllocationRowBuilder;
-import InliningRowBean;
-import InliningRowBuilder;
-import OptimisedLockRowBean;
-import OptimisedLockRowBuilder;
-import SuggestionRowBean;
-import SuggestionRowBuilder;
+import org.adoptopenjdk.jitwatch.ui.report.inlining.InliningRowBean;
+import org.adoptopenjdk.jitwatch.ui.report.inlining.InliningRowBuilder;
+import org.adoptopenjdk.jitwatch.ui.report.locks.OptimisedLockRowBean;
+import org.adoptopenjdk.jitwatch.ui.report.locks.OptimisedLockRowBuilder;
+import org.adoptopenjdk.jitwatch.ui.report.suggestion.SuggestionRowBean;
+import org.adoptopenjdk.jitwatch.ui.report.suggestion.SuggestionRowBuilder;
 import org.adoptopenjdk.jitwatch.util.UserInterfaceUtil;
 
 import javafx.collections.FXCollections;

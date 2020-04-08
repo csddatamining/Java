@@ -3,6 +3,7 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.compilechain;
 
 import static org.adoptopenjdk.jitwatch.util.UserInterfaceUtil.fix;
 
@@ -13,12 +14,12 @@ import org.adoptopenjdk.jitwatch.model.Compilation;
 import org.adoptopenjdk.jitwatch.model.IMetaMember;
 import org.adoptopenjdk.jitwatch.model.IReadOnlyJITDataModel;
 import org.adoptopenjdk.jitwatch.ui.compilationchooser.CompilationChooser;
-import ICompilationChangeListener;
-import IMemberSelectedListener;
-import IStageAccessProxy;
-import JITWatchUI;
-import IRedrawable;
-import RateLimitedResizeListener;
+import org.adoptopenjdk.jitwatch.ui.main.ICompilationChangeListener;
+import org.adoptopenjdk.jitwatch.ui.main.IMemberSelectedListener;
+import org.adoptopenjdk.jitwatch.ui.main.IStageAccessProxy;
+import org.adoptopenjdk.jitwatch.ui.main.JITWatchUI;
+import org.adoptopenjdk.jitwatch.ui.resize.IRedrawable;
+import org.adoptopenjdk.jitwatch.ui.resize.RateLimitedResizeListener;
 import org.adoptopenjdk.jitwatch.util.UserInterfaceUtil;
 
 import javafx.event.EventHandler;

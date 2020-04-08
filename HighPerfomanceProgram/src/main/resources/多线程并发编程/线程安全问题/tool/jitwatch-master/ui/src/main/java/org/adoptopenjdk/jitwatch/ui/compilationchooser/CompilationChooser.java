@@ -4,11 +4,13 @@
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
 
+package org.adoptopenjdk.jitwatch.ui.compilationchooser;
+
 import java.util.List;
 
 import org.adoptopenjdk.jitwatch.model.Compilation;
 import org.adoptopenjdk.jitwatch.model.IMetaMember;
-import IMemberSelectedListener;
+import org.adoptopenjdk.jitwatch.ui.main.IMemberSelectedListener;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

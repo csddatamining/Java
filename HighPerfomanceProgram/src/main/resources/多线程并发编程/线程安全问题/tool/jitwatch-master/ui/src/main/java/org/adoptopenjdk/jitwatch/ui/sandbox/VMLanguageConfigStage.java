@@ -3,11 +3,12 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.sandbox;
 
 import java.io.File;
 
 import org.adoptopenjdk.jitwatch.core.JITWatchConfig;
-import IStageClosedListener;
+import org.adoptopenjdk.jitwatch.ui.stage.IStageClosedListener;
 import org.adoptopenjdk.jitwatch.util.UserInterfaceUtil;
 
 import javafx.event.ActionEvent;

@@ -1,8 +1,9 @@
 /*
- * Copyright (c) 2013-2020 Chris Newland.
+ * Copyright (c) 2013-2017 Chris Newland.
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.sandbox;
 
 import org.adoptopenjdk.jitwatch.core.JITWatchConfig;
 import org.adoptopenjdk.jitwatch.core.JITWatchConfig.BackgroundCompilation;
@@ -10,7 +11,7 @@ import org.adoptopenjdk.jitwatch.core.JITWatchConfig.CompressedOops;
 import org.adoptopenjdk.jitwatch.core.JITWatchConfig.OnStackReplacement;
 import org.adoptopenjdk.jitwatch.core.JITWatchConfig.TieredCompilation;
 import org.adoptopenjdk.jitwatch.ui.filechooser.FileChooserList;
-import IStageClosedListener;
+import org.adoptopenjdk.jitwatch.ui.stage.IStageClosedListener;
 import org.adoptopenjdk.jitwatch.util.DisassemblyUtil;
 import org.adoptopenjdk.jitwatch.util.UserInterfaceUtil;
 import org.slf4j.Logger;
@@ -666,9 +667,7 @@ public class SandboxConfigStage extends Stage
 
 		boolean checked = false;
 
-		boolean disassemblerAvailable = DisassemblyUtil.getDisassemblerFilePath() != null;
-
-		if (disassemblerAvailable)
+		if (DisassemblyUtil.isDisassemblerAvailable())
 		{
 			if (config.isPrintAssembly())
 			{

@@ -3,6 +3,7 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.triview.bytecode;
 
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.C_SEMICOLON;
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.S_NEWLINE;
@@ -25,7 +26,7 @@ import org.adoptopenjdk.jitwatch.model.bytecode.MemberBytecode;
 import org.adoptopenjdk.jitwatch.model.bytecode.Opcode;
 import org.adoptopenjdk.jitwatch.report.Report;
 import org.adoptopenjdk.jitwatch.report.ReportType;
-import IStageAccessProxy;
+import org.adoptopenjdk.jitwatch.ui.main.IStageAccessProxy;
 import org.adoptopenjdk.jitwatch.ui.triview.ILineListener;
 import org.adoptopenjdk.jitwatch.ui.triview.ILineListener.LineType;
 import org.adoptopenjdk.jitwatch.ui.triview.TriViewNavigationStack;

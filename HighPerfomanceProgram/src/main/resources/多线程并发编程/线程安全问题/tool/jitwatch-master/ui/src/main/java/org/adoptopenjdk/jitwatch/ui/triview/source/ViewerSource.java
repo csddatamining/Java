@@ -3,6 +3,7 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.triview.source;
 
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.S_DOUBLE_SPACE;
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.S_EMPTY;
@@ -13,7 +14,7 @@ import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.S_TAB;
 import java.util.ArrayList;
 import java.util.List;
 
-import IStageAccessProxy;
+import org.adoptopenjdk.jitwatch.ui.main.IStageAccessProxy;
 import org.adoptopenjdk.jitwatch.ui.triview.ILineListener;
 import org.adoptopenjdk.jitwatch.ui.triview.Viewer;
 import org.adoptopenjdk.jitwatch.ui.triview.ILineListener.LineType;

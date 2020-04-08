@@ -3,6 +3,7 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.sandbox;
 
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.S_DOLLAR;
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.S_EMPTY;
@@ -33,7 +34,7 @@ import org.adoptopenjdk.jitwatch.parser.ILogParser;
 import org.adoptopenjdk.jitwatch.process.IExternalProcess;
 import org.adoptopenjdk.jitwatch.process.compiler.ICompiler;
 import org.adoptopenjdk.jitwatch.process.runtime.IRuntime;
-import ISandboxStage;
+import org.adoptopenjdk.jitwatch.ui.sandbox.ISandboxStage;
 import org.adoptopenjdk.jitwatch.util.FileUtil;
 import org.adoptopenjdk.jitwatch.util.StringUtil;
 import org.slf4j.Logger;

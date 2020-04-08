@@ -3,6 +3,7 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.toplist;
 
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.ATTR_BYTES;
 import static org.adoptopenjdk.jitwatch.core.JITWatchConstants.ATTR_COMPILE_ID;
@@ -41,7 +42,7 @@ import org.adoptopenjdk.jitwatch.toplist.MemberScore;
 import org.adoptopenjdk.jitwatch.toplist.MostUsedIntrinsicsTopListVisitable;
 import org.adoptopenjdk.jitwatch.toplist.NativeMethodSizeTopListVisitable;
 import org.adoptopenjdk.jitwatch.toplist.StaleTaskToplistVisitable;
-import IMemberSelectedListener;
+import org.adoptopenjdk.jitwatch.ui.main.IMemberSelectedListener;
 import org.adoptopenjdk.jitwatch.util.UserInterfaceUtil;
 
 public class TopListStage extends Stage

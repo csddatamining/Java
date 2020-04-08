@@ -3,14 +3,15 @@
  * Licensed under https://github.com/AdoptOpenJDK/jitwatch/blob/master/LICENSE-BSD
  * Instructions: https://github.com/AdoptOpenJDK/jitwatch/wiki
  */
+package org.adoptopenjdk.jitwatch.ui.nmethod;
 
 import org.adoptopenjdk.jitwatch.model.Compilation;
 import org.adoptopenjdk.jitwatch.model.IMetaMember;
-import ICompilationChangeListener;
-import IPrevNextCompilationListener;
-import JITWatchUI;
-import IRedrawable;
-import RateLimitedResizeListener;
+import org.adoptopenjdk.jitwatch.ui.main.ICompilationChangeListener;
+import org.adoptopenjdk.jitwatch.ui.main.IPrevNextCompilationListener;
+import org.adoptopenjdk.jitwatch.ui.main.JITWatchUI;
+import org.adoptopenjdk.jitwatch.ui.resize.IRedrawable;
+import org.adoptopenjdk.jitwatch.ui.resize.RateLimitedResizeListener;
 import org.adoptopenjdk.jitwatch.util.UserInterfaceUtil;
 
 import javafx.event.EventHandler;
