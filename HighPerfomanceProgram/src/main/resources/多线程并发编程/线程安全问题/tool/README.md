@@ -1,2 +1,24 @@
-###����jitwatch-master
+###jitwatch的使用
 mvn clean compile exec:java
+
+可直接参考这个操作博客  
+http://www.cnblogs.com/stevenczp/p/7975776.html  
+https://www.cnblogs.com/stevenczp/p/7978554.html  
+
+- 1、 输出jit日志
+（windows）在jre/bin/server  放置hsdis动态链接库  
+eclise、idea等工具，加上JVM参数  
+-server -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:+LogCompilation -XX:LogFile=jit.log  
+windows 要看到汇编代码的打印，需要加hsdis动态链接库
+
+- 2、 工具安装
+下载  https://github.com/AdoptOpenJDK/jitwatch  
+解压 通过maven运行  
+mvn clean compile exec:java
+
+- 3、 配置jitwatch
+页面选择 config， 配置要调试的项目src源码路径，和class编译路径
+打开jit.log
+点击start
+
+- 4、 在分析的结果中，选中指定的类，再选择右侧的具体方法，则弹出jit编译结果
