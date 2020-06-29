@@ -1,0 +1,13 @@
+person:
+  name: zhangsan
+  sex: 男
+  age: 19
+  isMerried: false
+
+#对象数组
+  friends: [{name: lisi,sex: 女},{name: wangwu,sex: 男}]
+#数组
+  pets:
+    - 小狗
+    - 小猫
+
