@@ -1,6 +1,8 @@
 package com.study.springboot.bean;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -12,9 +14,11 @@ import java.util.List;
  * @create 2020-06-26 12:22
  */
 @Component
-@ConfigurationProperties(prefix = "person")
+@ConfigurationProperties(prefix = "person2")
+@PropertySource("classpath:person2.properties")
 public class Person {
     private String name;
+//    @Value("${person.age}")
     private Integer age;
     private String sex;
     private boolean isMerried;

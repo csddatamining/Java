@@ -32,4 +32,12 @@ yml的基本语法：
         - 字面量：直接量，单个不能被拆分的值（数字、字符串、布尔）
         - 对象：键值对形式存在
         - 数组：字面量/对象的集合
+        
+    yml文件的读取操作
+    1. 三种书写方式：${字面量}、${配置文件中的取值}以及${spEL表达式}
+- 自定义properties的读取
+    1. 自定义一个properties文件，并且让key和之前的properties不一样;
+    2. 使用propertysource注解来标明你要读取的properties文件名;
+    3. 跟之前一样的读取方式，注意修改prefix的值;
 - properties和yml的读取方式
+    1. 
