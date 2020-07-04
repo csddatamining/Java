@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--jQuery文件，务必在bootstrap.min.js之前引入-->
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery/min.js"></script>
+    <!--前bootstrap4 核心css文件-->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+    <!--proper.min.js用于弹窗、提示、下拉菜单-->
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <!--最新的bootstrap4 核心JavaScript文件-->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script>
+        //添加的方法
+        function add() {
+            //弹出新建窗口
+            $('#myModal1').modal();
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>用户名</th>
+                <th>密码</th>
+                <th>真实姓名</th>
+                <th>性别</th>
+                <th>删除</th>
+                <th>修改</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="users:${list}">
+                <td th:text="${users.id}"></td>
+                <td th:text="${users.username}"></td>
+                <td th:text="${users.password}"></td>
+                <td th:text="${users.name}"></td>
+                <td th:text="${users.userSex}"></td>
+                <th><button th:id="${users.id}" onclick="return confirm('确定删除此数据？')">删除</button></th>
+                <th><button th:id="${users}">修改</button></th>
+            </tr>
+        </tbody>
+    </table>
+    <button onclick="add()">添加</button>
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+</div>
+</body>
+</html>

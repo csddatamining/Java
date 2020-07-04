@@ -39,5 +39,36 @@ yml的基本语法：
     1. 自定义一个properties文件，并且让key和之前的properties不一样;
     2. 使用propertysource注解来标明你要读取的properties文件名;
     3. 跟之前一样的读取方式，注意修改prefix的值;
-- properties和yml的读取方式
-    1. 
+
+### 1.3 使用Springboot进行Web开发
+构建一个Springboot项目，并把静态资源放到项目中：
+1.css、js、img等资源放到static目录中  
+2.html等模板代码放到template目录  
+3.修改配置文件  
+4.启动，测试是否正常  
+
+设置主页的默认访问方式  
+通过修改WebMvcConfigure的默认设置来指定页面的默认访问方式
+1、构建一个配置类，实现WebMvcConfigure接口，重写addViewControllers方法；  
+2、添加自定义页面的默认主页映射：addViewController().setViewName();  
+
+Springboot设置欢迎页面：  
+一、使用index.html作为欢迎页面
+- 静态页面  
+Spring boot项目在启动后，首先会去静态资源路径（resource/static）下查找index.html作为首页文件
+- 动态页面  
+如果在静态资源路径（resource/static）下找不到index.html,则会在resource/templates目录下找index.html作为首页文件  
+
+二、使用其他页面作为欢迎页面
+```
+@Controller
+public class WebMvcConfig implements WebMvcConfigurer {
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry){
+        registry.addViewController("/").setViewName("forward:login.html");
+    }
+}
+```
+
+
+拦截器功能
