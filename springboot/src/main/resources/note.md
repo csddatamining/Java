@@ -70,5 +70,16 @@ public class WebMvcConfig implements WebMvcConfigurer {
 }
 ```
 
+###1.4 Restful介绍及使用
+URI：统一资源标识符，服务器上的每一种资源比如文档、图像、视频片段、程序都由一个通用资源标识符（Uniform Resource Identifier，简称URL）进行定位。  
+Restful通过不同的注解支持前端的请求
+- @GetMapping，处理Get请求
+- @PostMapping，处理Post请求
+- @PutMapping，用于更新资源
+- @DeleteMapping，用于删除资源
+- @PathMapping,用于更新部分资源
 
-拦截器功能
+Controller中的映射注解
+@PathVariable，用于接收url路径上的参数
+@ModelAttribute，用于接收url?后面的参数，如uri?id=123&name=46,然后直接转为pojo
+

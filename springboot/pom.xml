@@ -24,6 +24,11 @@
     </properties>
     <!--项目所需要的依赖配置-->
     <dependencies>
+        <!--thymeleaf的依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
         <!--web模块的支持 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

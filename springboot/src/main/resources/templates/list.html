@@ -3,15 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <!--jQuery文件，务必在bootstrap.min.js之前引入-->
-    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery/min.js"></script>
-    <!--前bootstrap4 核心css文件-->
+    <title>登陆页面</title>
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <!-- 新 Bootstrap4 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
-    <!--proper.min.js用于弹窗、提示、下拉菜单-->
+    <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
     <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
-    <!--最新的bootstrap4 核心JavaScript文件-->
+    <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script>
+        $(function(){
+            $("button:contains('删除')").click(function(){
+                $.post("/user/delete",{"id":this.id});
+                $(this).parent().parent().remove();
+            });
+            $("button:contains('修改')").click(function(){
+                //弹出修改窗口
+                $('#myModal').modal();
+                //把User对象转成json对象
+                var jsonObj = JSON.parse($(this).attr("id"));
+                //为修改页面进行赋值
+                $('#txt_id').val(jsonObj['id']);
+                $('#txt_username').val(jsonObj['username']);
+                $('#txt_password').val(jsonObj['password']);
+                $('#txt_name').val(jsonObj['name']);
+                $('#txt_userSex').val(jsonObj['userSex']);
+            });
+        })
         //添加的方法
         function add() {
             //弹出新建窗口
@@ -23,30 +42,100 @@
 <div class="container">
     <table class="table table-dark table-hover">
         <thead>
-            <tr>
-                <th>id</th>
-                <th>用户名</th>
-                <th>密码</th>
-                <th>真实姓名</th>
-                <th>性别</th>
-                <th>删除</th>
-                <th>修改</th>
-            </tr>
+        <tr>
+            <th>id</th>
+            <th>用户名</th>
+            <th>密码</th>
+            <th>真实姓名</th>
+            <th>性别</th>
+            <th>删除</th>
+            <th>修改</th>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="users:${list}">
-                <td th:text="${users.id}"></td>
-                <td th:text="${users.username}"></td>
-                <td th:text="${users.password}"></td>
-                <td th:text="${users.name}"></td>
-                <td th:text="${users.userSex}"></td>
-                <th><button th:id="${users.id}" onclick="return confirm('确定删除此数据？')">删除</button></th>
-                <th><button th:id="${users}">修改</button></th>
-            </tr>
+        <tr th:each="users:${list}">
+            <td th:text="${users.id}"></td>
+            <td th:text="${users.username}"></td>
+            <td th:text="${users.password}"></td>
+            <td th:text="${users.name}"></td>
+            <td th:text="${users.userSex}"></td>
+            <th><button th:id="${users.id}" onclick="return confirm('你确定要删除这条数据吗？')">删除</button></th>
+            <th><button th:id="${users}">修改</button></th>
+        </tr>
         </tbody>
     </table>
     <button onclick="add()">添加</button>
-    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+    <!--添加页面-->
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post" action="#" th:action="@{/add.do}">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel1">添加</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="txt_username">用户名</label>
+                            <input type="text" name="username" class="form-control" placeholder="用户名">
+                        </div>
+                        <div class="form-group">
+                            <label for="txt_password">密码</label>
+                            <input type="password" name="password" class="form-control" placeholder="密码">
+                        </div>
+                        <div class="form-group">
+                            <label for="txt_name">真实姓名</label>
+                            <input type="text" name="name" class="form-control" placeholder="真实姓名">
+                        </div>
+                        <div class="form-group">
+                            <label for="txt_userSex">性别</label>
+                            <input type="text" name="userSex" class="form-control" placeholder="性别">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                        <input type="submit" value="保存" id="btn_submit1" class="btn btn-primary" /><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--修改页面-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post" action="#" th:action="@{/update.do}">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">修改</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" name="id" id="txt_id" hidden="true">
+                        <div class="form-group">
+                            <label for="txt_username">用户名</label>
+                            <input type="text" name="username" class="form-control" id="txt_username" placeholder="用户名">
+                        </div>
+                        <div class="form-group">
+                            <label for="txt_password">密码</label>
+                            <input type="password" name="password" class="form-control" id="txt_password" placeholder="密码">
+                        </div>
+                        <div class="form-group">
+                            <label for="txt_name">真实姓名</label>
+                            <input type="text" name="name" class="form-control" id="txt_name" placeholder="真实姓名">
+                        </div>
+                        <div class="form-group">
+                            <label for="txt_userSex">性别</label>
+                            <input type="text" name="userSex" class="form-control" id="txt_userSex" placeholder="性别">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                        <input type="submit" value="保存" id="btn_submit" class="btn btn-primary" /><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

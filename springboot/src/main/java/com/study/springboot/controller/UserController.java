@@ -23,12 +23,12 @@ public class UserController {
     private UsersRepository usersRepository;
 
     @RequestMapping("/user/login")
-    public String login(String username, String password, ModelMap modelMap, HttpSession session) {
-        if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)
-                && "admin".equals(username) && "admin".equals(password)) {
+    public String login(Users users, ModelMap modelMap, HttpSession session) {
+        if (!StringUtils.isEmpty(users.getUsername()) && !StringUtils.isEmpty(users.getPassword())
+                && "admin".equals(users.getUsername()) && "admin".equals(users.getPassword())) {
 
 //            登录成功保存session
-            session.setAttribute("username", username);
+            session.setAttribute("userInfo", users);
             return "redirect:/user/list";
         } else {
             modelMap.addAttribute("login_error", "用户名密码错误");
