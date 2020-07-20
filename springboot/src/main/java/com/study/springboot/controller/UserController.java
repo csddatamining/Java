@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -36,6 +39,23 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "users/{id}", method = RequestMethod.GET)
+    public Users findById(@PathVariable int id){
+        return usersRepository.findById(id).get();
+    }
+
+    @RequestMapping(value = "add.do", method = RequestMethod.POST)
+    public String saveUsers(@ModelAttribute Users users){
+        usersRepository.save(users);
+        return "redirect:/user/list";
+    }
+
+    @RequestMapping(value = "update.do", method = RequestMethod.PUT)
+    public String updateUsers(@ModelAttribute Users users){
+        usersRepository.saveAndFlush(users);
+        return "redirect:/user/list";
+    }
+
     @RequestMapping("/user/list")
     public String findAll(ModelMap modelMap) {
         List<Users> users = usersRepository.findAll();
@@ -43,9 +63,9 @@ public class UserController {
         return "list";
     }
 
-    @RequestMapping("/user/delete")
-    public String deleteById(int id) {
-        usersRepository.deleteUsersById(id);
+    @RequestMapping(value = "/user/delete", method = RequestMethod.POST)
+    public String deleteById(@PathVariable int id) {
+        usersRepository.deleteById(id);
         return "list";
     }
 }

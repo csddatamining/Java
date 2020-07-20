@@ -1,31 +1,27 @@
 package com.study.springboot.entity;
 
-import org.springframework.stereotype.Component;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.util.Objects;
 
 /**
  * @author Cdu
  * @discription:
- * @create 2020-07-04 23:57
+ * @create 2020-07-20 22:14
  */
-@Component
+@Entity
 public class Users {
+
     private int id;
     private String username;
     private String password;
     private String name;
     private String userSex;
 
-    public Users() {
-    }
-
-    public Users(int id, String username, String password, String name, String userSex) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.userSex = userSex;
-    }
-
+    @Id
+    @Column(name = "id")
     public int getId() {
         return id;
     }
@@ -34,6 +30,8 @@ public class Users {
         this.id = id;
     }
 
+    @Basic
+    @Column(name = "username")
     public String getUsername() {
         return username;
     }
@@ -42,6 +40,8 @@ public class Users {
         this.username = username;
     }
 
+    @Basic
+    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -50,6 +50,8 @@ public class Users {
         this.password = password;
     }
 
+    @Basic
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -58,11 +60,30 @@ public class Users {
         this.name = name;
     }
 
+    @Basic
+    @Column(name = "user_sex")
     public String getUserSex() {
         return userSex;
     }
 
     public void setUserSex(String userSex) {
         this.userSex = userSex;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Users users = (Users) o;
+        return id == users.id &&
+                Objects.equals(username, users.username) &&
+                Objects.equals(password, users.password) &&
+                Objects.equals(name, users.name) &&
+                Objects.equals(userSex, users.userSex);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, name, userSex);
     }
 }

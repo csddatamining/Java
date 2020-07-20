@@ -83,3 +83,9 @@ Controller中的映射注解
 @PathVariable，用于接收url路径上的参数
 @ModelAttribute，用于接收url?后面的参数，如uri?id=123&name=46,然后直接转为pojo
 
+###1.5 Spring Data Rest介绍
+Spring Data项目的子集，开发者只需要使用注解@RepositoryRestResource标记，就可以把整个Repository转换为HAL风格的Rest资源，
+目前已支持Spring Data JPA，Spring Data MongoDB，Spring Data Neoj4等等。  
+简单的说，Spring Data Rest把我们需要编写的大量Rest模板接口做了自动化实现，并符合HAL的规范。  
+HAL(Hypertxt Application Language)是一个被广泛采用的超文本表达的规范。
+官方文档：https://www.springcloud.cc/spring-data-rest-zhcn.html  

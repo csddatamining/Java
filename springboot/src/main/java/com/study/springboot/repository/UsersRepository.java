@@ -1,10 +1,10 @@
 package com.study.springboot.repository;
 
 import com.study.springboot.entity.Users;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import java.util.List;
+@RepositoryRestResource(path = "users")
+public interface UsersRepository extends JpaRepository<Users, Integer> {
 
-public interface UsersRepository {
-    List<Users> findAll();
-    int deleteUsersById(int id);
 }
