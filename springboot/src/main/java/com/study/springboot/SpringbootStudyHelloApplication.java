@@ -1,5 +1,6 @@
 package com.study.springboot;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -14,6 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @ComponentScan： 组件扫描、自动装配注解
  */
 @SpringBootApplication
+@MapperScan("com.study.springboot.dao")
 public class SpringbootStudyHelloApplication {
 
     public static void main(String[] args) {
