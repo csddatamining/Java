@@ -214,3 +214,16 @@ StatementHandler：负责所有处理JDBC的statement的交互
 4.写入Mapper接口中
 5.构建实体类
 
+####2.1.5 Springboot整合MyBatis流程
+1. 创建Springboot项目勾选MyBatis和mysql
+2. 书写mysql、mybatis配置信息：
+    1. mysql数据库用户名、密码、驱动、url
+    2. MyBatis映射配置文件：mapper映射所在位置
+    3. MyBatis全局配置文件：config全局配置文件
+    4. 项目实体类所在位置
+3. 根据表构建实体类
+4. 书写mapper接口
+5. 书写mapper映射：
+    1. 映射里书写具体的SQL，id属性要和接口里面的方法名对应
+    2. 要在启动类上加上@MapperScan的注解指向mapper映射文件所在位置
+

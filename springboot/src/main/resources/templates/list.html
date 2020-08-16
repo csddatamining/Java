@@ -6,7 +6,6 @@
     <title>登陆页面</title>
     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
-    <!--<script src="js/jquery-3.3.1.min.js"></script>-->
     <!-- 新 Bootstrap4 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
     <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
@@ -16,20 +15,35 @@
     <script>
         $(function(){
             $("button:contains('删除')").click(function(){
-                $.post("/user/delete",{"id":this.id});
+                $.ajax({
+                    type: "DELETE",
+                    url: "../product/"+this.id,
+                    data: "",
+                    dataType:"text",
+                    success: function(msg){
+                        alert(msg)
+                    }
+                });
                 $(this).parent().parent().remove();
             });
+
             $("button:contains('修改')").click(function(){
                 //弹出修改窗口
                 $('#myModal').modal();
                 //把User对象转成json对象
-                var jsonObj = JSON.parse($(this).attr("id"));
-                //为修改页面进行赋值
-                $('#txt_id').val(jsonObj['id']);
-                $('#txt_username').val(jsonObj['username']);
-                $('#txt_password').val(jsonObj['password']);
-                $('#txt_name').val(jsonObj['name']);
-                $('#txt_userSex').val(jsonObj['userSex']);
+                $.ajax({
+                    type: "GET",
+                    url: "../product/"+$(this).attr("id"),
+                    data: "",
+                    dataType:"json",
+                    success: function(msg){
+                        $('#txt_id').val(msg['id']);
+                        $('#txt_name').val(msg['name']);
+                        $('#txt_description').val(msg['description']);
+                        $('#txt_price').val(msg['price']);
+                        $('#txt_pic').val(msg['pic']);
+                    }
+                });
             });
         })
         //添加的方法
@@ -43,26 +57,26 @@
 <div class="container">
     <table class="table table-dark table-hover">
         <thead>
-        <tr>
-            <th>id</th>
-            <th>用户名</th>
-            <th>密码</th>
-            <th>真实姓名</th>
-            <th>性别</th>
-            <th>删除</th>
-            <th>修改</th>
-        </tr>
+            <tr>
+                <th>id</th>
+                <th>手机名称</th>
+                <th>手机描述</th>
+                <th>手机价格</th>
+                <th>手机图片</th>
+                <th>删除</th>
+                <th>修改</th>
+            </tr>
         </thead>
         <tbody>
-        <tr th:each="users:${list}">
-            <td th:text="${users.id}"></td>
-            <td th:text="${users.username}"></td>
-            <td th:text="${users.password}"></td>
-            <td th:text="${users.name}"></td>
-            <td th:text="${users.userSex}"></td>
-            <th><button th:id="${users.id}" onclick="return confirm('你确定要删除这条数据吗？')">删除</button></th>
-            <th><button th:id="${users}">修改</button></th>
-        </tr>
+            <tr th:each="product:${list}">
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.description}"></td>
+                <td th:text="${product.price}"></td>
+                <td th:text="${product.pic}"></td>
+                <th><button th:id="${product.id}" onclick="return confirm('你确定要删除这条数据吗？')">删除</button></th>
+                <th><button th:id="${product.id}">修改</button></th>
+            </tr>
         </tbody>
     </table>
     <button onclick="add()">添加</button>
@@ -77,20 +91,20 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="txt_username">用户名</label>
-                            <input type="text" name="username" class="form-control" placeholder="用户名">
+                            <label for="txt_username">手机名称</label>
+                            <input type="text" name="name" class="form-control" placeholder="手机名称">
                         </div>
                         <div class="form-group">
-                            <label for="txt_password">密码</label>
-                            <input type="password" name="password" class="form-control" placeholder="密码">
+                            <label for="txt_password">手机描述</label>
+                            <input type="password" name="description" class="form-control" placeholder="手机描述">
                         </div>
                         <div class="form-group">
-                            <label for="txt_name">真实姓名</label>
-                            <input type="text" name="name" class="form-control" placeholder="真实姓名">
+                            <label for="txt_name">手机价格</label>
+                            <input type="text" name="price" class="form-control" placeholder="手机价格">
                         </div>
                         <div class="form-group">
-                            <label for="txt_userSex">性别</label>
-                            <input type="text" name="userSex" class="form-control" placeholder="性别">
+                            <label for="txt_name">手机图片</label>
+                            <input type="text" name="pic" class="form-control" placeholder="手机图片">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -105,7 +119,7 @@
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="post" action="#" th:action="@{/update.do}">
+                <form method="post" action="#" th:action="@{../product/update}">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">修改</h4>
@@ -113,20 +127,20 @@
                     <div class="modal-body">
                         <input type="text" name="id" id="txt_id" hidden="true">
                         <div class="form-group">
-                            <label for="txt_username">用户名</label>
-                            <input type="text" name="username" class="form-control" id="txt_username" placeholder="用户名">
+                            <label for="txt_username">手机名称</label>
+                            <input type="text" name="name" class="form-control" id="txt_name" placeholder="手机名称">
                         </div>
                         <div class="form-group">
-                            <label for="txt_password">密码</label>
-                            <input type="password" name="password" class="form-control" id="txt_password" placeholder="密码">
+                            <label for="txt_password">手机描述</label>
+                            <input type="text" name="description" class="form-control" id="txt_description" placeholder="手机描述">
                         </div>
                         <div class="form-group">
-                            <label for="txt_name">真实姓名</label>
-                            <input type="text" name="name" class="form-control" id="txt_name" placeholder="真实姓名">
+                            <label for="txt_name">手机价格</label>
+                            <input type="text" name="price" class="form-control" id="txt_price" placeholder="手机价格">
                         </div>
                         <div class="form-group">
-                            <label for="txt_userSex">性别</label>
-                            <input type="text" name="userSex" class="form-control" id="txt_userSex" placeholder="性别">
+                            <label for="txt_userSex">手机图片</label>
+                            <input type="text" name="pic" class="form-control" id="txt_pic" placeholder="手机图片">
                         </div>
                     </div>
                     <div class="modal-footer">

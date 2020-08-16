@@ -1,3 +1,4 @@
+drop table if exists `student`;
 CREATE TABLE `student` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `name` varchar(10) NOT NULL,

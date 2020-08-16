@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @ComponentScan： 组件扫描、自动装配注解
  */
 @SpringBootApplication
-@MapperScan("com.study.springboot.dao")
+@MapperScan("com.study.springboot.repository")
 public class SpringbootStudyHelloApplication {
 
     public static void main(String[] args) {
