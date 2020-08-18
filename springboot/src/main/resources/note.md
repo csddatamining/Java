@@ -221,9 +221,39 @@ StatementHandler：负责所有处理JDBC的statement的交互
     2. MyBatis映射配置文件：mapper映射所在位置
     3. MyBatis全局配置文件：config全局配置文件
     4. 项目实体类所在位置
+    5. 展示sql语句配置：logging.level.com.study.springboot.repository=debug
 3. 根据表构建实体类
 4. 书写mapper接口
 5. 书写mapper映射：
     1. 映射里书写具体的SQL，id属性要和接口里面的方法名对应
     2. 要在启动类上加上@MapperScan的注解指向mapper映射文件所在位置
+
+###2.1.6 Spring data jpa简介及快速入门
+SpringData为了简化构建基于Spring框架应用的数据访问技术，包括关系型数据库、非关系数据库、Map-reduce框架、云数据服务等访问支持。
+它为我们提供使用统一的API标准来对数据访问层进行操作，这套标准包含CRUD（创建、获取、更新、删除）、查询、排序和分页的相关操作。
+
+Spring Data的特点
+- 具备ORM框架的对象关系映射功能
+
+统一的repository接口
+- Repository<T, ID extends Serializable>:统一接口
+- CrudRepository<T, ID extends Serializable>:基本CRUD操作
+- PagingAndSortingRepository<T, ID extends Serializable>:基本CRUD及分页
+
+统一的数据访问模板类
+- 如MongoTemplate、RedisTemplate等
+
+JPA是什么
+- JPA（Java Persistence API）是Sun官方提出的Java持久化规范。为Java开发人员提供了一种对象/关联映射工具来管理Java应用中的关系数据。
+它的出现主要是为了简化现有的持久化开发工作和整合ORM技术，结束现在Hibernate、TopLink、JDO等ORM框架各自为营的局面。
+- 值得注意的是，JPA是在充分吸收了现有的Hibernate、TopLink、JDO等ORM框架的基础上发展而来的，具有易于使用、伸缩性强等优点。
+
+注意：JPA是一套规范，不是一套产品，那么像Hibernate、TopLink、JDO它们是一套产品，如果说这些产品实现了这个JPA规范，那么我们就可以称它们为JPA的实现产品。
+
+步骤：
+- 1. 创建一个jpa的项目，勾选mysql的starter
+- 2. 配置mysql和jpa：jpa配置自动生成策略和sql语句格式化及输出
+- 3. 构建一个和表对应的实体类并且加上对应的注解
+- 4. 编写DAO层，实现JpaRepository接口
+- 5. 编写Controller层进行测试
 

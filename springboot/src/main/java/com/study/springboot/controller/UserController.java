@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -22,7 +19,7 @@ import java.util.List;
  * @discription:
  * @create 2020-07-04 23:06
  */
-@Controller
+@RestController
 public class UserController {
 
     @Resource
@@ -31,23 +28,32 @@ public class UserController {
     @Resource
     private ProductRepository productRepository;
 
-    @RequestMapping("/user/login")
-    public String login(Users users, ModelMap modelMap, HttpSession session) {
-        if (usersRepository.login(users) >= 1) {
-//            登录成功保存session
-            session.setAttribute("userInfo", users);
-            return "redirect:/user/list";
-        } else {
-            modelMap.addAttribute("login_error", "用户名密码错误");
-            return "login";
-        }
-    }
-
-//    @RequestMapping(value = "users/{id}", method = RequestMethod.GET)
-//    public Users findById(@PathVariable int id) {
-//        return usersRepository.findById(id).get();
+//    @RequestMapping("/user/login")
+//    public String login(Users users, ModelMap modelMap, HttpSession session) {
+//        if (usersRepository.login(users) >= 1) {
+////            登录成功保存session
+//            session.setAttribute("userInfo", users);
+//            return "redirect:/user/list";
+//        } else {
+//            modelMap.addAttribute("login_error", "用户名密码错误");
+//            return "login";
+//        }
 //    }
 
+    @RequestMapping(value = "user/id/{id}", method = RequestMethod.GET)
+    public Object findById(@PathVariable int id) {
+        return usersRepository.findById(id);
+    }
+
+    @GetMapping("/user")
+    public Users saveUser(Users users){
+        return usersRepository.save(users);
+    }
+
+    @GetMapping("/user/{username}")
+    public Users findByUsername(@PathVariable String username){
+        return usersRepository.findUsersByUsernameLike("%"+username+"%");
+    }
 //    @RequestMapping(value = "add.do", method = RequestMethod.POST)
 //    public String saveUsers(@ModelAttribute Users users) {
 //        usersRepository.save(users);
