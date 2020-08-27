@@ -18,7 +18,8 @@ class SpringbootStudyHelloApplicationTests {
 
 	@Test
 	void contextLoads() {
-		personRepository.updatePerson(Person.builder().pid("402881e6742afd7f01742afdca280001").pname("haha").page(43).psex("男").getmarried(false).build());
+		System.out.println(personRepository.findPersonByBname("三国演义"));
+//		personRepository.updatePerson(Person.builder().pid("402881e6742afd7f01742afdca280001").pname("haha").page(43).psex("男").getmarried(false).build());
 //		personRepository.deleteByName("zhang");
 //		System.out.println(personRepository.findAllByPageIsLessThanEqual(22));
 //		System.out.println(personRepository.findAllByPageBetweenAndPsexEquals(20,22 ,"男"));

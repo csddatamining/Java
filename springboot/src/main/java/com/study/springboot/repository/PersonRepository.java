@@ -1,6 +1,7 @@
 package com.study.springboot.repository;
 
 import com.study.springboot.entity.Person;
+import com.study.springboot.entity.PersonInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Cdu
@@ -66,4 +68,29 @@ public interface PersonRepository extends JpaRepository<Person, String> {
     @Query(value = "update person set pname=:#{#person.pname}, psex=:#{#person.psex}, page=:#{#person.page} " +
             "where pid=:#{#person.pid}", nativeQuery = true)
     void updatePerson(@Param("person") Person person);
+
+    /**
+     * 联表查询-根据书名查询书籍拥有者
+     * @param bname
+     * @return
+     */
+    @Query(value = "select p from Person p inner join Book b on p.pid=b.pid where b.bname=:bname")
+    Person findPersonByBname(@Param("bname") String bname);
+
+    //联表查询-根据personid查询person和book
+    @Query(value = "select p.pid as pid,p.pname as pname,p.psex as psex,p.getmarried as getmarried," +
+            "b.bid as bid,b.bname as bname,b.bprice as bprice from Person p inner join Book b on p.pid=b.pid " +
+            "where p.pid=:pid")
+    List<PersonInfo> findAllInfo(@Param("pid") String pid);
+
+    @Query(value = "select p.pid as pid,p.pname as pname,p.psex as psex,p.getmarried as getmarried," +
+            "b.bid as bid,b.bname as bname,b.bprice as bprice from Person p inner join Book b on p.pid=b.pid " +
+            "where p.pid=:pid")
+    List<Object> findAllInfo1(@Param("pid") String pid);
+
+    @Query(value = "select p.pid as pid,p.pname as pname,p.psex as psex,p.getmarried as getmarried," +
+            "b.bid as bid,b.bname as bname,b.bprice as bprice from Person p inner join Book b on p.pid=b.pid " +
+            "where p.pid=:pid")
+    List<Map<String,Object>> findAllInfo2(@Param("pid") String pid);
+
 }

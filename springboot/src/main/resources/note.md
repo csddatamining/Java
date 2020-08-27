@@ -273,7 +273,7 @@ Spring JPA的基本操作
 - 实体类属性名中间只要出现了大写字母，就会导致数据库的字段名有下划线隔开，比如你使用了isMarried属性名，那么实体类的字段名就会变成is_married，这样容易找不到值
 - 属性名类型是boolean类型的在某些数据库会变成bit(1)类型，其中0为false，1为true。
 
-测试用表结构：
+测试用表person结构：
 pid varchar(32)
 pname varchar(255) unique
 psex varchar(255)
@@ -306,3 +306,26 @@ SpringData JPA的逆向工程操作和多表查询
 - 使用数据接口：构建一个数据接口，里面的抽象方法就是SQL语句的查询结果的字段对应的getXXX抽象方法
 - 使用集合：直接使用List/Map等集合嵌套的方式来获取到接收的数据
 - 使用VO（View Object）：单独构建一个跟页面展示数据对应的VO的实体类来接收数据
+
+多表SQL操作-案例
+测试用表book结构：
+bid int(16)
+bname varchar(128)
+bprice double(6.2)
+pid varchar(32)
+
+查询题目
+- 通过书籍名查询拥有者信息
+- 通过person的id来查询两张表的所有信息
+
+注意事项
+- 使用数据接口的方式来接收查询的字段时要注意，必须要为要查询的字段名起别名，否则会无法获取到
+
+多表复杂查询的又一种方式-QueryDSL
+QueryDSL仅仅是一个通用的查询框架，专注于通过JavaAPI构建类型安全的Sql查询，也可以说QueryDSL是基于各种ORM框架以及SQL之上的一个通用的查询框架，
+QueryDSL的查询，类似于SQL查询，很全面只不过是一个用SQL一个是用代码来代替SQL。  
+
+建议
+单表乃至简单的多表操作，都不推荐使用QueryDSL，使用JPA自带API简洁又效率，但是涉及太复杂的查询，推荐使用QueryDSL
+
+参考资料：http://www.querydsl.com/static/querydsl/latest/reference/html/
