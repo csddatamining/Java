@@ -1,6 +1,32 @@
 # springboot
+## springboot基本介绍
+### 什么是springboot
+- Springboot相对于Spring来说是一套全新框架，来自于Spring家族，因此Spring所具备的功能它都有且更易使用；
+同时简化了基于Spring的应用开发，通过少量代码就能创建一个独立的，产品级别的Spring应用。
+- Springboot默认配置了很多框架的使用方式，就像maven整合了所有的jar包，Spring整合了所有的框架。它的核心思想是：约定由于配置，Spring所有开发细节都是依据此思想进行实现的。
+
+什么是微服务
+- 微服务是一种架构风格，它要求我们在开发一个应用的时候，这个应用必须构建成一系列小服务的组合；可以通过http的方式进行互通。
+
+什么是单体架构
+- 指我们将一个应用中的所有服务都封装在一个应用中。把数据库访问，web访问，等等各个功能放到一个war包内  
+单体架构有缺点：
+- 优点：易于开发和测试；方便部署；需要扩展时将war包复制多份，然后放到多个服务器上，做负载均衡即可
+- 缺点：项目臃肿；资源无法隔离；无法灵活扩展
+
+什么是微服务架构
+- 微服务架构，就是打破之前all in one的架构方式，把每个功能元素独立出来。
+把独立出来的功能元素的动态组合，需要的功能元素才拿来去组合，需要多一些时可以组合多个功能元素。
+
+如何构建微服务
+- 一个大型的微服务架构，就像一个复杂交织的神经网络，每个神经元就是一个功能元素，他们完成各自的功能，然后通过http或者RPC互相请求调用。
+- 构建一个个功能独立的微服务应用单元，可以使用springboot，可以快速帮我们构建一个应用。
+- 大型分布式网络服务的调用，这部分由spring cloud完成，实现分布式。
+- 在分布式中间，进行流式数据计算、批处理，采用springcloud data flow
+
 ## 1.springboot原理
 ### 1.1 Springboot启动类解析
+@SpringbootApplication
 - @SpringBootConfiguration： springboot的配置类-》》@Configuration：标明这是一个配置类--》@Components：加载到spring容器  
 - @EnableAutoConfiguration： 开启自动配置功能  
     1.@AutoConfigurationPackage： 自动配置包  
@@ -8,9 +34,9 @@
     2.@Import({AutoConfigurationImportSelector.class})： 加载自定类到容器中  
            2.1AutoConfigurationImportSelector：自动配置导入选择器  
            根据项目判断项目需要哪些配置信息然后把默认的配置内容导入到spring容器中进行管理
-- @ComponentScan： 组件扫描、自动装配注解
+- @ComponentScan： 组件扫描、自动装配注解,用来指定容器扫描的范围
 
-### 1.2 Springboot中配置
+### 1.2 Springboot配置
 - Springboot中的配置文件
     1. 方便修改默认配置
     2. 其他信息保存在配置文件中
@@ -24,7 +50,7 @@
 yml文件介绍：全称为YAML（YAML Ain't Markup Language）它是一种标记语言，直观的被电脑识别的数据序列化格式，并且容易被人类阅读，
 这种标记语言与其他标记语言不同的是，它是以数据为中心，比json、xml等更适合做配置文件。  
 yml的基本语法：  
-    1. key:value的格式（value前面的空格不能少，可以有多个，不能用tab替代）
+    1. key: value的格式（value前面的空格不能少，可以有多个，不能用tab替代）
     2. 大小写敏感
     3. 字符串默认不需要使用引号，单引号和双引号的区别在于是否能用转义字符
     4. 注释方式:#
@@ -34,32 +60,62 @@ yml的基本语法：
         - 数组：字面量/对象的集合
         
     yml文件的读取操作
-    1. 三种书写方式：${字面量}、${配置文件中的取值}以及${spEL表达式}
+    1. 三种书写方式：${字面量}、${配置文件中的取值}以及${spEL表达式}  
 - 自定义properties的读取
     1. 自定义一个properties文件，并且让key和之前的properties不一样;
-    2. 使用propertysource注解来标明你要读取的properties文件名;
+    2. 使用propertysource注解来标明你要读取的properties文件名：@PropertySource("classpath:person.properties")
     3. 跟之前一样的读取方式，注意修改prefix的值;
+	
+properties注入方式：
+- @ConfigurationProperties(prefix = "xxx")
+- @Value("${person.name}")
+- @Value("#{11*3}")
 
 ### 1.3 使用Springboot进行Web开发
-构建一个Springboot项目，并把静态资源放到项目中：
+前期准备：
+- 熟悉Thymeleaf语法
+- 熟悉spring、springMVC中的相关操作
+- 熟悉拦截器
+- 熟悉springboot搭建项目过程
+- 了解Bootstrap
+- 准备一套web静态页面（登录页面、信息展示页面）
+- IDEA开发工具
+
+构建一个Springboot项目，并把静态资源放到项目中：  
 1.css、js、img等资源放到static目录中  
 2.html等模板代码放到template目录  
 3.修改配置文件  
 4.启动，测试是否正常  
 
 设置主页的默认访问方式  
-通过修改WebMvcConfigure的默认设置来指定页面的默认访问方式
+通过修改WebMvcConfigure的默认设置来指定页面的默认访问方式  
 1、构建一个配置类，实现WebMvcConfigure接口，重写addViewControllers方法；  
 2、添加自定义页面的默认主页映射：addViewController().setViewName();  
 
-Springboot设置欢迎页面：  
+**Springboot设置欢迎页面**  
 一、使用index.html作为欢迎页面
 - 静态页面  
 Spring boot项目在启动后，首先会去静态资源路径（resource/static）下查找index.html作为首页文件
 - 动态页面  
 如果在静态资源路径（resource/static）下找不到index.html,则会在resource/templates目录下找index.html作为首页文件  
 
-二、使用其他页面作为欢迎页面
+二、使用其他页面作为欢迎页面  
+假设我们在 **resources/templates** 目录下有个 **login.html** 文件（使用 **Thymeleaf** 模版），想让它作为首页。
+
+方式一：  
+通过自定义一个 **Controller** 来实现，在 **Controller** 中返回逻辑视图名即可：
+```java
+@Controller
+public class HelloController {
+     @RequestMapping("/") 
+     public String hello(){
+         return "login";
+     }
+}
+```
+	
+方式二：  
+通过自定义一个 **MVC** 配置，并重写 **addViewControllers** 方法进行映射关系配置即可。	
 ```
 @Controller
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -70,7 +126,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 }
 ```
 
-###1.4 Restful介绍及使用
+**拦截器功能**  
+在WebMvcConfigure类里重写添加拦截器的方法，并进行业务的书写。
+
+### 1.4 Restful介绍及使用  
 URI：统一资源标识符，服务器上的每一种资源比如文档、图像、视频片段、程序都由一个通用资源标识符（Uniform Resource Identifier，简称URL）进行定位。  
 Restful通过不同的注解支持前端的请求
 - @GetMapping，处理Get请求
@@ -425,3 +484,15 @@ COMMIT/ROLLBACK  //事务提交或回滚
  - 开启事务：start transaction
  - 提交/回滚：commit/rollback
  
+ ####2.1.7.2 Springboot中的事务处理
+目标：
+- springboot中事务的使用
+- @Transactional中属性讲解
+- 事务在实战中的应用场景
+
+前期准备：
+1) 构建项目：构建一个springboot+mybatis的项目，数据库使用mysql，数据库是一个简单的student表
+2) 跑通逻辑：完成简单的一条数据插入逻辑
+3) 测试异常：逻辑中加入一个异常，让异常和插入数据在一个方法中，查看当异常出现后，数据插入是否成功
+4) 测试事务：若不成功，加上@Transactional事务注解，再次观察发生异常的话，是否插入成功
+
