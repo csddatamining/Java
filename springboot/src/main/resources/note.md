@@ -131,7 +131,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 ### 1.4 Restful介绍及使用  
 URI：统一资源标识符，服务器上的每一种资源比如文档、图像、视频片段、程序都由一个通用资源标识符（Uniform Resource Identifier，简称URL）进行定位。  
-Restful通过不同的注解支持前端的请求
+
+**什么是REST**  
+- REST（Representational State Transfer，表述性转移）一词由Roy Thomas Fielding在2000年博士论文中提出，定义了他对互联网软件架构的原则，因此我们可以说Rest是一种架构风格。  
+**REST的原则**
+- 网络上所有事物都被抽象为资源
+- 每个资源都有一个唯一的资源标识符
+- 同一个资源具有多种表现形式（xml，json等）
+- 对资源的各种操作不会改变资源标识符
+- 所有的操作都是无状态的
+
+Restful通过不同的注解支持前端的请求  
 - @GetMapping，处理Get请求
 - @PostMapping，处理Post请求
 - @PutMapping，用于更新资源
@@ -139,19 +149,47 @@ Restful通过不同的注解支持前端的请求
 - @PathMapping,用于更新部分资源
 
 Controller中的映射注解
-@PathVariable，用于接收url路径上的参数
-@ModelAttribute，用于接收url?后面的参数，如uri?id=123&name=46,然后直接转为pojo
+- @PathVariable，用于接收url路径上的参数
+- @ModelAttribute，用于接收url?后面的参数，如uri?id=123&name=46,然后直接转为pojo
 
-###1.5 Spring Data Rest介绍
-Spring Data项目的子集，开发者只需要使用注解@RepositoryRestResource标记，就可以把整个Repository转换为HAL风格的Rest资源，
+**RESTFUL开发流程**
+![](static/img/RESTful开发流程.png)
+
+**开启热部署**
+```
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-devtools</artifactId>
+	<scope>runtime</scope>
+	<optional>true</optional>
+</dependency>
+
+<build>
+	<plugins>
+		<!--工程打jar包插件-->
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+			<!--开启热部署-->
+			<configuration>
+				<fork>true</fork>
+			</configuration>
+		</plugin>
+	</plugins>
+</build>
+```
+
+
+### 1.5 Spring Data Rest介绍  
+- Spring Data项目的子集，开发者只需要使用注解@RepositoryRestResource标记，就可以把整个Repository转换为HAL风格的Rest资源，
 目前已支持Spring Data JPA，Spring Data MongoDB，Spring Data Neoj4等等。  
-简单的说，Spring Data Rest把我们需要编写的大量Rest模板接口做了自动化实现，并符合HAL的规范。  
-HAL(Hypertxt Application Language)是一个被广泛采用的超文本表达的规范。
-官方文档：https://www.springcloud.cc/spring-data-rest-zhcn.html  
+- 简单的说，Spring Data Rest把我们需要编写的大量Rest模板接口做了自动化实现，并符合HAL的规范。  
+- HAL(Hypertxt Application Language)是一个被广泛采用的超文本表达的规范。
+- 官方文档：https://www.springcloud.cc/spring-data-rest-zhcn.html  
 
-##2 数据库访问中间件
-###2.1 MyBatis
-####2.1.1 ORM框架和MyBatis介绍
+## 2 数据库访问中间件
+### 2.1 MyBatis
+#### 2.1.1 ORM框架和MyBatis介绍
 ORM(Object Related Mapping)：对象映射关系，用于实现面向对象编程语言里不同类型系统的数据之间的转换。
 简单的说，ORM是通过使用描述对象和数据库之间映射的元数据，将程序中的对象与关系数据库相互映射。
 - 异构性：ORM可以解决数据库与程序之间的异构性，比如在Java中我们使用String表示字符串，
@@ -166,9 +204,10 @@ ORM(Object Related Mapping)：对象映射关系，用于实现面向对象编�
 
 MyBatis介绍：
 优秀的持久层框架（前身是Apache的一个开源项目iBatis），支持定制化SQL、存储过程及高级映射。  
-可以使用简单的XML或注解来配置和映射原生信息，将接口和Java的POJOs（Plain Old Java Objects，普通的java对象）映射成数据库中的记录。
+可以使用简单的XML(mapper文件)或注解（写接口中的方法）来配置和映射原生信息，将接口和Java的POJOs（Plain Old Java Objects，普通的java对象）映射成数据库中的记录。
 
-####2.1.2 MyBatis工作流程及架构说明
+#### 2.1.2 MyBatis工作流程及架构说明
+![](static/img/MyBatis架构.jpg)
 - 接口层：主要定义的是与数据库进行交互的方式（增删改查，接口调用方式基于StatementID/基于Mapper接口）
 - 数据处理层：MyBatis核心，负责参数映射和动态SQL生成，生成之后MyBatis执行SQL语句，将返回的结果映射成自定义的类型
     1. 参数映射（ParameterHandler）：参数映射配置、参数映射解析、参数类型解析
@@ -179,7 +218,8 @@ MyBatis介绍：
     SQL语句配置方式：基于XML配置、基于注解
 - 引导层：基于XML配置方式、基于Java API方式
 
-####2.1.3 MyBatis主要成员及层次结构
+
+#### 2.1.3 MyBatis主要成员及层次结构
 - Configuration
 全局配置文件
 映射配置文件：存储相关sql操作
@@ -189,10 +229,11 @@ MyBatis介绍：
 - BoundSql
 
 层次结构：
-SqlSession：作为MyBatis最顶层API，作为会话访问，完成数据库增删改查功能
-Executor：MyBatis执行器，调度的核心，负责SQL语句的生成和查询缓存的维护
-StatementHandler：负责所有处理JDBC的statement的交互
-####2.1.4 MyBatis的基本使用
+SqlSession：作为MyBatis最顶层API，作为会话访问，完成数据库增删改查功能  
+Executor：MyBatis执行器，调度的核心，负责SQL语句的生成和查询缓存的维护  
+StatementHandler：负责所有处理JDBC的statement的交互  
+
+#### 2.1.4 MyBatis的基本使用
 1.pom引入MyBatis依赖：
 ```
 <dependency>
@@ -270,24 +311,55 @@ StatementHandler：负责所有处理JDBC的statement的交互
     </delete>
 </mapper>
 ```
-4.写入Mapper接口中
+4.写入Mapper接口中  
 5.构建实体类
 
-####2.1.5 Springboot整合MyBatis流程
+#### 2.1.5 Springboot整合MyBatis流程
+![](static/img/springboot整合mybatis流程图.png)
 1. 创建Springboot项目勾选MyBatis和mysql
 2. 书写mysql、mybatis配置信息：
     1. mysql数据库用户名、密码、驱动、url
-    2. MyBatis映射配置文件：mapper映射所在位置
-    3. MyBatis全局配置文件：config全局配置文件
-    4. 项目实体类所在位置
+    2. MyBatis映射配置文件：mapper映射所在位置:mybatis.mapper-locations=classpath:mybatis/mapper/*.xml
+    3. MyBatis全局配置文件：config全局配置文件:mybatis.config-location=classpath:mybatis/mybatis-config.xml
+    4. 项目实体类所在位置:mybatis.type-aliases-package=com.study.springboot.entity
     5. 展示sql语句配置：logging.level.com.study.springboot.repository=debug
 3. 根据表构建实体类
 4. 书写mapper接口
 5. 书写mapper映射：
     1. 映射里书写具体的SQL，id属性要和接口里面的方法名对应
     2. 要在启动类上加上@MapperScan的注解指向mapper映射文件所在位置
+	
+占位符：
+- #：@Select("select id, username,password,name from users where name like #{name}")  
+查找:usersDao.findByName("%a%");
+- %：@Select("select id, username,password,name from users where name like '%${name}%'")  
+查找：usersDao.findByName("a");
 
-###2.1.6 Spring data jpa简介及快速入门
+**案例**
+使用Springboot、热部署、MyBatis注解、lombok、Thymeleaf实现多表业务  
+流程：  
+![](static/img/springboot整合mybatis和rest完成业务操作.png)
+
+多表查询
+```java
+public interface UsersRepository {
+    @Select("select count(1) from Users where username=#{users.username} and password=#{users.password}")
+    int login(@Param("users") Users users);
+
+    //演示一对多中的1，这里是根据id来查users对象，那么我们可以结合ProductRepository来一次性把对应的product也查出来
+    //property指的是在Users实体类中一对多中的多的属性名，column代表的是把users表中的那个字段作为后面查询的条件，many指的是查询是一对多还是一对一
+    @Select("select * from Users where id=#{id}")
+    @Results({
+            @Result(
+                    property = "products",column = "id",many = @Many(select = "com.study.mybatis.repository.ProductRepository.findByUid")
+            )
+    })
+    Users findUsersById(int id);
+}
+
+```
+
+### 2.1.6 Spring data jpa简介及快速入门
 SpringData为了简化构建基于Spring框架应用的数据访问技术，包括关系型数据库、非关系数据库、Map-reduce框架、云数据服务等访问支持。
 它为我们提供使用统一的API标准来对数据访问层进行操作，这套标准包含CRUD（创建、获取、更新、删除）、查询、排序和分页的相关操作。
 

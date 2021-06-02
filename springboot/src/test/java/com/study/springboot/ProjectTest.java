@@ -39,14 +39,14 @@ public class ProjectTest {
         SqlSessionFactoryUtil.closeSession(sqlSession);
     }
 
-    @Test
-    public void testInsert(){
-        Student stu = new Student("刘德华","boy");
-        SqlSession sqlSession = SqlSessionFactoryUtil.openSession();
-        StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
-        mapper.insertStudent(stu);
-        SqlSessionFactoryUtil.closeSession(sqlSession);
-    }
+//    @Test
+//    public void testInsert(){
+//        Student stu = new Student("刘德华","boy");
+//        SqlSession sqlSession = SqlSessionFactoryUtil.openSession();
+//        StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
+//        mapper.insertStudent(stu);
+//        SqlSessionFactoryUtil.closeSession(sqlSession);
+//    }
 
     @Test
     public void testUpdate(){
