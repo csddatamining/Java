@@ -359,27 +359,34 @@ public interface UsersRepository {
 
 ```
 
+目标：
+- SpringData介绍
+- JPA介绍
+- SpringData和JPA的关系
+- SpringData JPA的快速入门
+
 ### 2.1.6 Spring data jpa简介及快速入门
 SpringData为了简化构建基于Spring框架应用的数据访问技术，包括关系型数据库、非关系数据库、Map-reduce框架、云数据服务等访问支持。
-它为我们提供使用统一的API标准来对数据访问层进行操作，这套标准包含CRUD（创建、获取、更新、删除）、查询、排序和分页的相关操作。
+它为我们提供使用统一的API标准来对数据访问层进行操作，这套标准包含CRUD（创建、获取、更新、删除）、查询、排序和分页的相关操作。  
+可参看https://spring.io/projects/spring-data
 
-Spring Data的特点
+**Spring Data的特点**
 - 具备ORM框架的对象关系映射功能
-
-统一的repository接口
+**统一的repository接口**
 - Repository<T, ID extends Serializable>:统一接口
 - CrudRepository<T, ID extends Serializable>:基本CRUD操作
 - PagingAndSortingRepository<T, ID extends Serializable>:基本CRUD及分页
-
-统一的数据访问模板类
+**统一的数据访问模板类**
 - 如MongoTemplate、RedisTemplate等
 
-JPA是什么
+**JPA是什么**
 - JPA（Java Persistence API）是Sun官方提出的Java持久化规范。为Java开发人员提供了一种对象/关联映射工具来管理Java应用中的关系数据。
 它的出现主要是为了简化现有的持久化开发工作和整合ORM技术，结束现在Hibernate、TopLink、JDO等ORM框架各自为营的局面。
 - 值得注意的是，JPA是在充分吸收了现有的Hibernate、TopLink、JDO等ORM框架的基础上发展而来的，具有易于使用、伸缩性强等优点。
 
 注意：JPA是一套规范，不是一套产品，那么像Hibernate、TopLink、JDO它们是一套产品，如果说这些产品实现了这个JPA规范，那么我们就可以称它们为JPA的实现产品。
+
+![](static/img/SpringDataJPA快速入门流程.png)  
 
 步骤：
 - 1. 创建一个jpa的项目，勾选mysql的starter
@@ -388,30 +395,44 @@ JPA是什么
 - 4. 编写DAO层，实现JpaRepository接口
 - 5. 编写Controller层进行测试
 
-Spring JPA的基本操作
+**application.properties配置**
+
+```
+#支持SQL 输出
+spring.jpa.show-sql=true
+#format 一下 SQL 进行输出
+spring.jpa.properties.hibernate.format_sql=true
+#自动生成开启，让表数据会自动跟随entity类的变化而变化
+spring.jpa.properties.hibernate.hbm2ddl.auto=update
+#开启自动更新，若数据库没有对应的表，则生成，若有，则检查是否需要更改
+spring.jpa.hibernate.ddl-auto=update
+```
+
+**Spring JPA的基本操作**  
+目标：
 - 基于单表的SQL操作
 - JPA逆向工程及多表SQL操作
 - QueryDSL的简单介绍
 
-基于单表的SQL操作-关键字拼凑的案例
+**基于单表的SQL操作-关键字拼凑的案例**  
 相关查询题目
 - 查询出年龄小于等于22岁的人
 - 查询出年龄在20-22岁并且性别是男的人
 - 查询出已婚且性别是男的人
 
-注意事项
-- 实体类属性命名不要出现isXXX、getXXX，会导致关键字拼凑出错
+**注意事项**  
+- 实体类属性命名不要出现isXxx、getXxx，会导致关键字拼凑出错
 - 实体类属性名中间只要出现了大写字母，就会导致数据库的字段名有下划线隔开，比如你使用了isMarried属性名，那么实体类的字段名就会变成is_married，这样容易找不到值
 - 属性名类型是boolean类型的在某些数据库会变成bit(1)类型，其中0为false，1为true。
 
-测试用表person结构：
-pid varchar(32)
-pname varchar(255) unique
-psex varchar(255)
-page int(3)
-getmarried boolean
+测试用表person结构：  
+pid varchar(32)  
+pname varchar(255) unique  
+psex varchar(255)  
+page int(3)  
+getmarried boolean  
 
-单表SQL操作-关键字无法解决的问题
+**单表SQL操作-关键字无法解决的问题**  
 - 实体类的属性名与表的字段名无法映射，导致关键字找不到
 - CRUD操作方式比较另类或者是你不想用关键字的写法
 - 涉及到多表操作
@@ -420,13 +441,13 @@ getmarried boolean
 - 使用SQL语句来书写SQL
 - 使用HQL语句来书写SQL
 
-单表SQL操作-手写SQL的案例
+**单表SQL操作-手写SQL的案例**  
 相关操作
 - 按照panme来模糊删除
 - 查询年龄是20-22岁且性别是女的人
 - 使用spel表达式来演示用户的登录
 
-注意事项
+**注意事项**
 - 如果是删改操作，需要加@Modifying和@Transaction注解
 - 如果是SQL语句，请在@Query注解上加上NativeQuery=true的属性
 - 传参的方式有两种：
