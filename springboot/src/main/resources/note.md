@@ -454,7 +454,52 @@ getmarried boolean
     - 使用?+数字的方式，数字从1开始，代表第几个参数;
     - 使用:+参数名的方式，这种方式最好配合@Param注解一起使用
 
-SpringData JPA的逆向工程操作和多表查询
+```java
+public interface PersonRepository extends JpaRepository<Person,String> {
+    //1、查询出年龄小于等于22岁的人；
+    List<Person> findAllByPageIsLessThanEqual(Integer age);
+    //2、查询出年龄在20-22岁之间并且性别是男的人
+    List<Person> findAllByPageBetweenAndPsexEquals(Integer lowage,Integer highage,String sex);
+    //3、查询出已经结婚并且性别是男的人
+    List<Person> findAllByGetmarriedIsTrueAndPsexEquals(String psex);
+    //4、根据pname来模糊删除一个person数据
+    @Transactional
+    @Modifying
+    @Query(value = "delete from Person where pname like %:pname%")
+    void deleteByName(@Param("pname") String pname);
+    //5、使用HQL或者是sql来书写一个查询语句，查询出年龄在20-22岁，性别是女的人
+//    @Query(value = "select * from person where page between 20 and 22 and psex='女'",nativeQuery = true)
+    @Query(value = "select p from Person p where p.page between 20 and 22 and p.psex='女'")
+    List<Person> findPerson();
+    //6、使用SPEL表达式来完成person表的修改操作
+    @Modifying
+    @Transactional
+    @Query(value = "update person set pname=:#{#person.pname},psex=:#{#person.psex},page=:#{#person.page} " +
+            "where pid=:#{#person.pid}",nativeQuery = true)
+    void updatePerson(@Param("person") Person person);
+    //7、联表查询-根据书名来查该书籍的拥有者
+    @Query(value = "select p from Person p inner join Book b on p.pid=b.pid where b.bname=:bname")
+    Person findPersonByBname(@Param("bname") String bname);
+    //8、联表查询-根据用户id来查询person和book
+    @Query(value = "select p.pid as pid,p.pname as pname,p.psex as psex,p.getmarried as getmarried," +
+            "b.bid as bid,b.bname as bname,b.bprice as bprice from Person p inner join Book b on p.pid=b.pid " +
+            "where p.pid=:pid")
+    List<PersonInfo> findAllInfo(@Param("pid") String pid);
+
+    @Query(value = "select p.pid as pid,p.pname as pname,p.psex as psex,p.getmarried as getmarried," +
+            "b.bid as bid,b.bname as bname,b.bprice as bprice from Person p inner join Book b on p.pid=b.pid " +
+            "where p.pid=:pid")
+    List<Object> findAllInfo1(@Param("pid") String pid);
+
+    @Query(value = "select p.pid as pid,p.pname as pname,p.psex as psex,p.getmarried as getmarried," +
+            "b.bid as bid,b.bname as bname,b.bprice as bprice from Person p inner join Book b on p.pid=b.pid " +
+            "where p.pid=:pid")
+    List<Map<String,Object>> findAllInfo2(@Param("pid") String pid);
+}
+
+```
+
+**SpringData JPA的逆向工程操作和多表查询**
 - 使用数据接口：构建一个数据接口，里面的抽象方法就是SQL语句的查询结果的字段对应的getXXX抽象方法
 - 使用集合：直接使用List/Map等集合嵌套的方式来获取到接收的数据
 - 使用VO（View Object）：单独构建一个跟页面展示数据对应的VO的实体类来接收数据
@@ -466,6 +511,13 @@ bname varchar(128)
 bprice double(6.2)
 pid varchar(32)
 
+**通过IDEA逆向生成实体类**  
+1.Database关联数据库：添加数据库源  
+2.F4，工程结构（Project Structure）中，添加JPA模块，右边+号中选择persistence.xml  
+3.在IDEA左下角Persistence中，右键选中生成持久化映射（Generate Persistence Mapping By Database Schema）  
+4.在生成类中，添加关联关系  
+
+
 查询题目
 - 通过书籍名查询拥有者信息
 - 通过person的id来查询两张表的所有信息
@@ -473,7 +525,7 @@ pid varchar(32)
 注意事项
 - 使用数据接口的方式来接收查询的字段时要注意，必须要为要查询的字段名起别名，否则会无法获取到
 
-多表复杂查询的又一种方式-QueryDSL
+多表复杂查询的又一种方式-QueryDSL  
 QueryDSL仅仅是一个通用的查询框架，专注于通过JavaAPI构建类型安全的Sql查询，也可以说QueryDSL是基于各种ORM框架以及SQL之上的一个通用的查询框架，
 QueryDSL的查询，类似于SQL查询，很全面只不过是一个用SQL一个是用代码来代替SQL。  
 
@@ -482,7 +534,7 @@ QueryDSL的查询，类似于SQL查询，很全面只不过是一个用SQL一个
 
 参考资料：http://www.querydsl.com/static/querydsl/latest/reference/html/
 
-###2.1.7 数据库事务
+### 2.1.7 数据库事务
 数据库事务的概念及其实现原理
 事务的概念：数据库事务是访问并更新数据库中各项数据项的一个程序执行单元  
 事务的组成：一个数据库事务通常包含对数据库进行读或写的一个操作序列  
@@ -504,7 +556,7 @@ COMMIT/ROLLBACK  //事务提交或回滚
 4.以上即使在数据库出现故障以及并发事务存在的情况下依然成立。  
 事务能够使系统更方便的进行故障恢复以及并发控制，从而保证数据库状态的一致性。
 
-事务并发异常：
+**事务并发异常：**  
 1. 丢失更新（Lost Update）:指事务覆盖了其他事务对数据的已提交修改，导致其他事务的修改好像丢失了一样。
 2. 脏读（Dirty Dead）：指一个事务读取了另一个事务未提交的数据。
 3. 不可重复读（UnRepeatable Read）：指一个事务对同一数据的读取结果前后不一致。
@@ -520,7 +572,7 @@ COMMIT/ROLLBACK  //事务提交或回滚
 - 串行化(SERIALIZABLE)  
 隔离级别从小到达安全性越来越高，效率越来越低
 
-事务并发异常：丢失更新
+**事务并发异常：丢失更新**
 如果多个线程操作，基于同一个查询结构对表中的记录进行修改，那么后修改的记录将会覆盖前面修改的记录
 
 第一类更新丢失：回滚丢失  
@@ -553,7 +605,7 @@ COMMIT/ROLLBACK  //事务提交或回滚
 
 注意：SQL92没有定义这种现象，标准定义的所有隔离级别都不允许第一类丢失更新发生
 
-事务并发异常-丢失更新的解决办法  
+**事务并发异常-丢失更新的解决办法**  
 - 悲观锁机制  
 假定这样的问题是高概率的，最好一开始就锁住，免得更新老是出错
     1) 添加共享锁方式：select * from account lock in share mode;   
@@ -567,17 +619,17 @@ COMMIT/ROLLBACK  //事务提交或回滚
   
  在用户并发数比较少且冲突严重的应用系统中选择悲观锁-排他锁的方法，其他情况首先选乐观锁版本列方法
  
- ####2.1.7.1 MySQL事务隔离级别实战
+ #### 2.1.7.1 MySQL事务隔离级别实战
  
  数据库命令
  - 查看数据库版本：select version();
- - 查看数据库现在的隔离级别：select @@session.tx_isolation;
+ - 查看数据库现在的隔离级别：select @@session.tx_isolation; 8.0以上版本为transaction_isolation
  - 修改隔离级别：set @@session.tx_isolation=级别参数;
  - 级别参数：READ-UNCOMMITTED,READ-COMMITTED,REPEATABLE-READ(MySQL innoDB的默认隔离级别),SERIALIZABLE
  - 开启事务：start transaction
  - 提交/回滚：commit/rollback
  
- ####2.1.7.2 Springboot中的事务处理
+#### 2.1.7.2 Springboot中的事务处理
 目标：
 - springboot中事务的使用
 - @Transactional中属性讲解
@@ -588,4 +640,26 @@ COMMIT/ROLLBACK  //事务提交或回滚
 2) 跑通逻辑：完成简单的一条数据插入逻辑
 3) 测试异常：逻辑中加入一个异常，让异常和插入数据在一个方法中，查看当异常出现后，数据插入是否成功
 4) 测试事务：若不成功，加上@Transactional事务注解，再次观察发生异常的话，是否插入成功
+
+**@Transactional中的属性讲解**  
+- readOnly：用于设置当前事务是否为只读事务，设置为true表示只读，false表示可读写，默认值为false。
+- rollbackFor：用于设置需要进行回滚的异常类数组，当方法抛出指定异常数组中的异常时，则进行事务回滚。
+				例如：指定单一异常类：@Transactional(rollbackFor=RuntimeException.class)
+- rollbackForClassName：用于设置需要进行回滚的异常类名称数组，当方法中抛出指定异常名称数组中的异常时，则进行事务回滚。
+- noRollbackFor：用于设置不需要进行回滚的异常类数组，当方法中抛出指定异常名称数组中的异常时，不进行事务回滚。
+- noRollbackForClassName：用于设置不需要进行回滚的异常类名称数组，当方法中抛出指定异常名称数组中的异常时，不进行事务回滚。
+- propagation：该属性用于设置事务的传播行为。
+- timeout：该属性用于设置事务的超时秒数，默认值为-1表示永不超时
+- isolation：用于设置底层数据库的事务隔离级别，用于多事务并发的情况。
+
+
+
+
+
+
+
+
+
+
+
 
