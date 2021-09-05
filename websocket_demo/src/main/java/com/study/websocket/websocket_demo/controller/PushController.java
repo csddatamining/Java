@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * @author Cdu
- * @discription: WebSocet  for Server
+ * @discription: WebSocket for Server
  * @create 2021-04-06 23:50
  */
 @Component

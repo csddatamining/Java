@@ -107,10 +107,11 @@ Spring boot项目在启动后，首先会去静态资源路径（resource/static
 ```java
 @Controller
 public class HelloController {
-     @RequestMapping("/") 
-     public String hello(){
-         return "login";
-     }
+    
+        @RequestMapping("/") 
+        public String hello(){
+        return "login";
+    }
 }
 ```
 	
@@ -652,9 +653,38 @@ COMMIT/ROLLBACK  //事务提交或回滚
 - timeout：该属性用于设置事务的超时秒数，默认值为-1表示永不超时
 - isolation：用于设置底层数据库的事务隔离级别，用于多事务并发的情况。
 
+## 3 Java基础
+### 2.1 Java程序运行分析
+**class文件内容**  
+class文件包含Java程序执行的字节码；数据严格按照格式紧凑排列在class文件中的二进制流，中间无任何分隔符；文件开头有一个0xcafebabe特殊的一个标志。
 
+**JVM运行时数据区**  
+线程共享部分：所有线程都能访问的这块内存区域，随虚拟机或者GC而创建或销毁
+- 方法区：class信息、常量、静态变量、编译后的代码等  
+Oracle的Hotspot在java7中方法区放在永久代，java8放在元数据空间，并通过GC机制对这个区域进行管理
+- 堆内存：JVM启动时创建，存放对象的实例。垃圾回收器主要管理的就是堆内存  
+细分为老年代、新生代（Eden、From Survivor、To Survivor）  
 
+线程独占部分：每个线程都会有它独立的空间，随线程生命周期而创建和销毁
+- 虚拟机栈：线程栈由多个栈桢组成。一个线程会执行一个或多个方法，一个方法对应一个栈桢。  
+栈桢内容包含：局部变量表、操作数栈、动态链接、方法返回地址、附加信息等。栈内存默认最大1M，超出抛StackOverflow  
+- 本地方法栈
+- 程序计数器：记录当前线程执行字节码的位置，存储的是字节码指令地址，如果执行本地方法，则计数器为空。
 
+### 2.2 多线程
+线程状态
+- New：尚未启动的线程的线程状态
+- Runnable：可运行线程的线程状态，等待CPU调度
+- Blocked：线程阻塞等待监视器锁定的线程状态。处于synchronized同步代码块或方法中被阻塞。
+- Waiting：等待线程的线程状态。不带超时的方式：  
+Object.wait、Thread.join、LockSupport.park
+- Timed Waiting：具有指定等待时间的等待线程的线程状态。带超时的方式：  
+Thread.sleep、Object.wait、Thread.join、LockSupport.parkNanos、LockSupport.parkUtil
+- Terminated：终止线程的线程状态。
+
+线程终止
+不正确的线程终止：Stop、Destroy
+正确的线程终止：interrupt、标志位
 
 
 
